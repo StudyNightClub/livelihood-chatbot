@@ -1,5 +1,6 @@
 const Client = require('../../service/LINE/client')
-const lineVerify = require('../../service/LINE/utils').koaValidateMiddleware
+const lineVerify = require('../../service/LINE/middleware').signatureValidation
+const eventAdaptor = require('../../service/LINE/middleware').eventAdaptor
 const bodyParser = require('koa2-better-body')
 
 module.exports = router => {
@@ -7,8 +8,8 @@ module.exports = router => {
     '/LINE/webhook',
     bodyParser(),
     lineVerify(),
+    eventAdaptor(),
     async (ctx, next) => {
-      ctx.request.body = ctx.request.fields.events || ctx.request.body.events
       await next()
 
       const client = new Client(ctx.config)

@@ -1,28 +1,4 @@
 const crypto = require('crypto')
-const SignatureValidationFailed = require('../../exceptions')
-  .SignatureValidationFailed
-
-module.exports.koaValidateMiddleware = () => {
-  return async (ctx, next) => {
-    const xLineSignature = ctx.headers['x-line-signature']
-    const eventsBody = ctx.request.fields || {}
-
-    if (
-      validateSignature(
-        eventsBody,
-        ctx.config.lineChannelSecret,
-        xLineSignature
-      )
-    ) {
-      await next()
-    } else {
-      throw new SignatureValidationFailed(
-        'LINE signature validation failed',
-        xLineSignature
-      )
-    }
-  }
-}
 
 /**
  * Validate the signature from LINE Message API server
