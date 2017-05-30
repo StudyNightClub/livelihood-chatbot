@@ -22,7 +22,7 @@ module.exports = () => {
         // TODO: handle connection error with control server
         await controlClient.post('/user', {
           userId: e.source.userId,
-          userProfile: e.profile
+          userNickname: e.source.profile.displayName
         })
         /* respond with hello, new user message */
         respondEvents.push({
