@@ -1,5 +1,7 @@
 # Livelihood Chatbot
 
+[![Build Status][travis-badge]][travis-link]
+
 Chatbot interface for pushing government livelihood notification
 
 Currently only support LINE service.
@@ -86,3 +88,6 @@ npm start
 ## License
 
 MIT
+
+[travis-badge]: https://travis-ci.org/StudyNightClub/livelihood-chatbot.svg?branch=master
+[travis-link]: https://travis-ci.org/StudyNightClub/livelihood-chatbot
