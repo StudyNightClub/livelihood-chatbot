@@ -15,13 +15,14 @@ class client {
 
     this.post = this.post.bind(this)
     this.get = this.get.bind(this)
+    this.delete = this.delete.bind(this)
   }
 
   /**
    * request control server with POST method
    * @param {String} url - The url where request would sent to 
    * @param {Object} body - The javascript object that would sent 
-   * @return {Request}
+   * @return {Promise}
    */
   post(url, body) {
     return request(
@@ -36,12 +37,25 @@ class client {
   /**
    * request control server with GET method
    * @param {String} url - The url where request would sent to
-   * @return {Request}
+   * @return {Promise}
    */
   get(url) {
     return request(
       new Request(`${this.controlRoot}${url}`, {
         method: 'GET'
+      })
+    )
+  }
+
+  /**
+   * request control server with DELETE method
+   * @param {String} url - The url where request would sent to
+   * @return {Promise}
+   */
+  delete(url) {
+    return request(
+      new Request(`${this.controlRoot}${url}`, {
+        method: 'DELETE'
       })
     )
   }

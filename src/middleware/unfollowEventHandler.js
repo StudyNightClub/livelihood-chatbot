@@ -9,7 +9,7 @@ module.exports = () => {
     /* separate unfollow and notUnfollow events */
     const events = ctx.request.events.reduce(
       (output, e) => {
-        if (e.type === 'follow') output.unfollow.push(e)
+        if (e.type === 'unfollow') output.unfollow.push(e)
         else output.notUnfollow.push(e)
         return output
       },
@@ -22,10 +22,7 @@ module.exports = () => {
         /* post new user info to control server */
         const controlClient = new ControlServerClient(ctx.config)
         // TODO: handle connection error with control server
-        await controlClient.delete('/user', {
-          userId: e.source.userId,
-          timestamp: +new Date()
-        })
+        await controlClient.delete(`/user/${e.source.userId}`)
         return Promise.resolve(e)
       })
     )
