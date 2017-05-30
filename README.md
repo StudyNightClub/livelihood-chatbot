@@ -1,15 +1,17 @@
-# LINE Bot Boilerplate
+# Livelihood Chatbot
 
-Build chatbot with Koa + LINE Message API
+Chatbot interface for pushing government livelihood notification
+
+Currently only support LINE service.
 
 ## Requirement
 
 Since utilizing the `async/await` of [Koa](http://koajs.com/),
-this boilerplate require **node v7.6.0** or higher for ES2015 and async function support.
+this project require **node v7.6.0** or higher for ES2015 and async function support.
 
 It is possible to use this project in node version < 7.6, if you introduce the babel transpiler in workflow. To parse and transpile async functions, the minimum one is the [transform-async-to-generator](http://babeljs.io/docs/plugins/transform-async-to-module-method/) or [transform-async-to-module-method](http://babeljs.io/docs/plugins/transform-async-to-generator/) plugins
 
-This boilerplate is supposed to run on any operation system.
+This project is supposed to run on any operation system.
 
 ## Install
 
