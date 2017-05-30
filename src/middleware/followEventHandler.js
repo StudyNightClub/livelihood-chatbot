@@ -19,7 +19,8 @@ module.exports = () => {
       events.follow.map(async e => {
         /* post new user info to control server */
         const controlClient = new ControlServerClient(ctx.config)
-        controlClient.post('/user', {
+        // TODO: handle connection error with control server
+        await controlClient.post('/user', {
           userId: e.source.userId,
           userProfile: e.profile
         })
