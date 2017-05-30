@@ -1,4 +1,5 @@
 const emoji = require('node-emoji')
+const ControlServerClient = require('../service/control/client')
 
 module.exports = () => {
   return async (ctx, next) => {
@@ -16,6 +17,13 @@ module.exports = () => {
     // wait until all follow events were handled
     await Promise.all(
       events.follow.map(async e => {
+        /* post new user info to control server */
+        const controlClient = new ControlServerClient(ctx.config)
+        controlClient.post('/user', {
+          userId: e.source.userId,
+          userProfile: e.profile
+        })
+        /* respond with hello, new user message */
         respondEvents.push({
           target: e.replyToken,
           event: 'follow',
