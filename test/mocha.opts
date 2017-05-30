@@ -1,0 +1,5 @@
+--timeout 5000
+--require chai
+--reporter nyan
+--ui bdd
+--recursive ./test/spec

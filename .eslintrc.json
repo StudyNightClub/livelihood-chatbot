@@ -1,0 +1,35 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "google",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "sourceType": "script"
+  },
+  "env": {
+    "es6": true,
+    "node": true,
+    "mocha": true,
+    "browser": true
+  },
+  "rules": {
+    "eqeqeq": [
+      "warn",
+      "smart"
+    ],
+    "prettier/prettier": [
+      "warn",
+      {
+        "singleQuote": true,
+        "trailingComma": "es6",
+        "bracketSpacing": true,
+        "semi": false
+      }
+    ]
+  }
+}

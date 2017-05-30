@@ -1,0 +1,16 @@
+{
+  "restartable": "rs",
+  "ignore": [
+    ".git",
+    "node_modules/**/node_modules",
+    "LICENSE",
+    "package.json",
+    "yarn.lock",
+    "README.md"
+  ],
+  "verbose": true,
+  "execMap": {},
+  "env": {
+    "NODE_ENV": "development"
+  }
+}
