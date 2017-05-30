@@ -4,14 +4,20 @@ module.exports = () => {
   return async (ctx, next) => {
     const events = ctx.request.body
 
-    ctx.request.events = events.map(event => {
+    ctx.response.events = events.map(event => {
       switch (event.type) {
         case 'follow':
           return {
             target: event.source.userId,
             event: 'follow',
             type: 'push',
-            message: { type: 'text', text: emoji.emojify('感謝加我為好友呦:blush:') }
+            message: [
+              {
+                type: 'text',
+                text: `歡迎~ ${event.source.profile.displayName}`
+              },
+              { type: 'text', text: emoji.emojify('感謝加我為好友呦:blush:') }
+            ]
           }
         case 'unfollow':
           return {
