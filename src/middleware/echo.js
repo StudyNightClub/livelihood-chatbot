@@ -2,17 +2,10 @@ const emoji = require('node-emoji')
 
 module.exports = () => {
   return async (ctx, next) => {
-    const events = ctx.request.body
+    const events = ctx.request.events
 
-    ctx.request.events = events.map(event => {
+    const respondEvents = events.map(event => {
       switch (event.type) {
-        case 'follow':
-          return {
-            target: event.source.userId,
-            event: 'follow',
-            type: 'push',
-            message: { type: 'text', text: emoji.emojify('感謝加我為好友呦:blush:') }
-          }
         case 'unfollow':
           return {
             target: event.source.userId,
@@ -30,9 +23,10 @@ module.exports = () => {
             message: echoMessage(event.message)
           }
         default:
-          throw new TypeError('Unknown type of incoming event!')
+          throw new TypeError('Unknown handled type of incoming event!')
       }
     })
+    ctx.response.events = [...ctx.response.events, ...respondEvents]
 
     await next()
   }
