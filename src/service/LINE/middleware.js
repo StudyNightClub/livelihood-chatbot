@@ -41,7 +41,8 @@ module.exports.eventAdaptor = () => {
       })
     )
 
-    ctx.request.body = events
+    ctx.request.events = events
+    ctx.response.events = []
     await next()
   }
 }

@@ -2,6 +2,7 @@ const Koa = require('koa')
 const router = require('./routes')
 const config = require('./config')
 const errorHandler = require('./middleware/errorHandler')
+const followEventHandler = require('./middleware/followEventHandler')
 const echo = require('./middleware/echo')
 
 /* ----- bootstrap server ----- */
@@ -17,6 +18,7 @@ app.use(errorHandler())
 app.use(router.routes())
 app.use(router.allowedMethods())
 // setting main business logic
+app.use(followEventHandler())
 app.use(echo())
 // listen
 app.listen(config.port, () => {
