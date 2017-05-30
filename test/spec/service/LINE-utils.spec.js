@@ -1,4 +1,4 @@
-const expect = require('Chai').expect
+const expect = require('chai').expect
 const validateSignature = require('../../../src/service/LINE/utils')
   .validateSignature
 

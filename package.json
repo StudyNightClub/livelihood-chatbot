@@ -20,8 +20,7 @@
     "eslint": "eslint src/**",
     "test": "mocha --watch",
     "test-all": "npm run eslint && mocha",
-    "coverage": "nyc --reporter=lcov  --reporter=text mocha",
-    "prepublish": "npm run test-all"
+    "coverage": "npm run eslint && nyc --reporter=lcov  --reporter=text mocha"
   },
   "dependencies": {
     "dotenv-safe": "^4.0.4",
