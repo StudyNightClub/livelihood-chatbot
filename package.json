@@ -20,7 +20,7 @@
     "eslint": "eslint src/**",
     "test": "mocha --watch",
     "test-all": "npm run eslint && mocha",
-    "coverage": "nyc --reporter=html --reporter=text mocha",
+    "coverage": "nyc --reporter=lcov  --reporter=text mocha",
     "prepublish": "npm run test-all"
   },
   "dependencies": {
