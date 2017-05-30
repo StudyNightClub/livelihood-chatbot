@@ -3,6 +3,11 @@ const ControlServerClient = require('../service/control/client')
 
 module.exports = () => {
   return async (ctx, next) => {
+    if (ctx.request.events.every(e => e.type !== 'follow')) {
+      await next()
+      return
+    }
+    /* separate follow and notFollow events */
     const events = ctx.request.events.reduce(
       (output, e) => {
         if (e.type === 'follow') output.follow.push(e)
@@ -11,7 +16,6 @@ module.exports = () => {
       },
       { follow: [], notFollow: [] }
     )
-    if (ctx.request.events.length === events.notFollow.length) await next()
 
     const respondEvents = []
     // wait until all follow events were handled
