@@ -1,6 +1,7 @@
 # Livelihood Chatbot
 
 [![Build Status][travis-badge]][travis-link]
+[![Coverage Status][coveralls-badge]][coveralls-link]
 
 Chatbot interface for pushing government livelihood notification
 
@@ -91,3 +92,5 @@ MIT
 
 [travis-badge]: https://travis-ci.org/StudyNightClub/livelihood-chatbot.svg?branch=master
 [travis-link]: https://travis-ci.org/StudyNightClub/livelihood-chatbot
+[coveralls-badge]: https://codecov.io/github/StudyNightClub/livelihood-chatbot/coverage.svg?branch=master
+[coveralls-link]: https://codecov.io/github/StudyNightClub/livelihood-chatbot?branch=master
