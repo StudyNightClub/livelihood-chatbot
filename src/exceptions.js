@@ -29,3 +29,16 @@ class SignatureValidationFailed extends ExtendableError {
   }
 }
 module.exports.SignatureValidationFailed = SignatureValidationFailed
+
+/** Represent the error of bad formated message */
+class MessageFormatError extends ExtendableError {
+  /**
+   * @constructor
+   * @param {String} msg - The message of the error.
+   */
+  constructor(msg) {
+    super(msg)
+    this.status = 400
+  }
+}
+module.exports.MessageFormatError = MessageFormatError
