@@ -56,6 +56,20 @@ module.exports.replyAgent = () => {
 
     const results = await Promise.all(
       events.map(async e => {
+        if (e.event === 'whoami') {
+          const userProfileResponse = await client.getProfile(e.userId)
+          const userProfile = await userProfileResponse.json()
+          e.message = [
+            {
+              type: 'text',
+              text: `你的名字，${userProfile.displayName}`
+            },
+            {
+              type: 'text',
+              text: `和身分證字號，${e.userId}`
+            }
+          ]
+        }
         switch (e.type) {
           case 'reply':
             return client.replyMessage(e.target, e.message)
