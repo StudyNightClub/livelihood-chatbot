@@ -57,7 +57,7 @@ module.exports.replyAgent = () => {
     const results = await Promise.all(
       events.map(async e => {
         if (e.event === 'whoami') {
-          const userProfileResponse = await client.getProfile(e.target)
+          const userProfileResponse = await client.getProfile(e.userId)
           const userProfile = await userProfileResponse.json()
           e.message = [
             {

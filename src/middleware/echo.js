@@ -17,7 +17,7 @@ module.exports = () => {
             }
           }
         case 'message':
-          if (event.message.type === 'text' || event.message.text === '我是誰') {
+          if (event.message.type === 'text' && event.message.text === '我是誰') {
             return {
               target: event.replyToken,
               event: 'whoami',
