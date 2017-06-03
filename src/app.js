@@ -10,7 +10,9 @@ app.context.config = config
 // use logger
 if (config.logger) {
   const logger = require('koa-logger')
+  const responsesLogger = require('./middleware/responsesLogger')
   app.use(logger())
+  app.use(responsesLogger())
 }
 app.use(errorHandler())
 // use router
