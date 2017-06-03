@@ -28,6 +28,7 @@ app.use(errorHandler())
 app.use(router.routes())
 app.use(router.allowedMethods())
 // setting main business logic
+app.use(livelihood.keeper())
 app.use(livelihood.followEventHandler())
 app.use(livelihood.unfollowEventHandler())
 app.use(livelihood.echo())

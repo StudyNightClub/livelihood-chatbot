@@ -1,12 +1,12 @@
-const control = require('../service/Livelihood/middleware')
 const bodyParser = require('koa2-better-body')
+const livelihood = require('../service/Livelihood/middleware')
 
 module.exports = router => {
   router.post(
     '/push',
     bodyParser(),
     // controlServerVerify(), TODO: Verify request with my secret token
-    control.eventAdaptor(),
-    control.pushHandler()
+    livelihood.eventAdaptor(),
+    livelihood.pushHandler()
   )
 }
