@@ -1,5 +1,5 @@
-const LINEClient = require('../service/LINE/client')
-const lineCarouselTemplate = require('../service/LINE/utils')
+const LINEClient = require('../../LINE/client')
+const lineCarouselTemplate = require('../../LINE/utils')
   .carouselMessageFormatter
 const emoji = require('node-emoji')
 

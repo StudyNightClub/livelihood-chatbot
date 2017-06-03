@@ -1,14 +1,12 @@
-const lineVerify = require('../../service/LINE/middleware').signatureValidation
-const lineEventAdaptor = require('../../service/LINE/middleware').eventAdaptor
-const lineReplyAgent = require('../../service/LINE/middleware').replyAgent
 const bodyParser = require('koa2-better-body')
+const line = require('../../service/LINE/middleware')
 
 module.exports = router => {
   router.post(
     '/LINE/webhook',
     bodyParser(),
-    lineVerify(),
-    lineEventAdaptor(),
-    lineReplyAgent()
+    line.signatureValidation(),
+    line.eventAdaptor(),
+    line.replyAgent()
   )
 }
