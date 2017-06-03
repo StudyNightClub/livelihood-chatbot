@@ -9,9 +9,8 @@ module.exports = () => {
         if (e.type !== 'follow') return Promise.resolve(e)
 
         const client = new Client(ctx.config)
-        const userProfileResponse = await client.getProfile(e.source.userId)
-        const userProfile = await userProfileResponse.json()
-        e.source.profile = userProfile
+        e.source.profile = await client.getProfile(e.source.userId)
+
         return Promise.resolve(e)
       })
     )

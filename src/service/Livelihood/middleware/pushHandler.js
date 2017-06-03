@@ -10,8 +10,7 @@ module.exports = () => {
     ctx.state.serviceResponses = await Promise.all(
       ctx.state.incomingEvents.map(async e => {
         if (!e.userNickname) {
-          const userProfileResponse = await lineClient.getProfile(e.target)
-          const userProfile = await userProfileResponse.json()
+          const userProfile = await lineClient.getProfile(e.target)
           e.userNickname = userProfile.displayName
         }
         return lineClient.pushMessage(e.target, [

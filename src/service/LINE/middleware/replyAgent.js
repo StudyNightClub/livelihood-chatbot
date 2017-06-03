@@ -10,8 +10,7 @@ module.exports = () => {
     const results = await Promise.all(
       events.map(async e => {
         if (e.event === 'whoami') {
-          const userProfileResponse = await client.getProfile(e.userId)
-          const userProfile = await userProfileResponse.json()
+          const userProfile = await client.getProfile(e.userId)
           e.message = [
             {
               type: 'text',
@@ -34,9 +33,7 @@ module.exports = () => {
       })
     )
 
-    ctx.state.serviceResponses = await Promise.all(
-      results.map(result => result.json())
-    )
+    ctx.state.serviceResponses = results
     ctx.body = {}
   }
 }
