@@ -1,11 +1,10 @@
-const LINEClient = require('../../LINE/client')
 const lineCarouselTemplate = require('../../LINE/utils')
   .carouselMessageFormatter
 const emoji = require('node-emoji')
 
 module.exports = () => {
   return async (ctx, next) => {
-    const lineClient = new LINEClient(ctx.config)
+    const lineClient = ctx.clients.LINE
 
     ctx.state.serviceResponses = await Promise.all(
       ctx.state.incomingEvents.map(async e => {

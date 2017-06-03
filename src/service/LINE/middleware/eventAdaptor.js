@@ -1,5 +1,3 @@
-const Client = require('../client')
-
 module.exports = () => {
   return async (ctx, next) => {
     let events = ctx.request.fields.events || ctx.request.body.events
@@ -8,9 +6,7 @@ module.exports = () => {
       events.map(async e => {
         if (e.type !== 'follow') return Promise.resolve(e)
 
-        const client = new Client(ctx.config)
-        e.source.profile = await client.getProfile(e.source.userId)
-
+        e.source.profile = await ctx.clients.LINE.getProfile(e.source.userId)
         return Promise.resolve(e)
       })
     )

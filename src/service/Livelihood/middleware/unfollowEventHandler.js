@@ -1,5 +1,3 @@
-const LivelihoodServerClient = require('../client')
-
 module.exports = () => {
   return async (ctx, next) => {
     if (ctx.state.incomingEvents.every(e => e.type !== 'unfollow')) {
@@ -20,7 +18,7 @@ module.exports = () => {
     await Promise.all(
       events.unfollow.map(async e => {
         /* post new user info to livelihood control server */
-        const livelihoodClient = new LivelihoodServerClient(ctx.config)
+        const livelihoodClient = ctx.clients.Livelihood
         // TODO: handle connection error with livelihood control server
         await livelihoodClient.delete(`/user/${e.source.userId}`)
         return Promise.resolve(e)

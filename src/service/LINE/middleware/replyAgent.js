@@ -1,11 +1,9 @@
-const Client = require('../client')
-
 module.exports = () => {
   return async (ctx, next) => {
     await next()
 
     const events = ctx.state.outgoingEvents
-    const client = new Client(ctx.config)
+    const client = ctx.clients.LINE
 
     const results = await Promise.all(
       events.map(async e => {

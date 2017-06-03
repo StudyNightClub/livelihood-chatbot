@@ -1,5 +1,4 @@
 const emoji = require('node-emoji')
-const LivelihoodServerClient = require('../client')
 
 module.exports = () => {
   return async (ctx, next) => {
@@ -22,7 +21,7 @@ module.exports = () => {
     await Promise.all(
       events.follow.map(async e => {
         /* post new user info to livelihood control server */
-        const livelihoodClient = new LivelihoodServerClient(ctx.config)
+        const livelihoodClient = ctx.clients.Livelihood
         // TODO: handle connection error with livelihood control server
         await livelihoodClient.post('/user', {
           userId: e.source.userId,

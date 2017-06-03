@@ -1,12 +1,19 @@
 const Koa = require('koa')
 const router = require('./routes')
 const config = require('./config')
+const LINEClient = require('./service/LINE/client')
+const LivelihoodClient = require('./service/Livelihood/client')
 const errorHandler = require('./middleware/errorHandler')
 const livelihood = require('./service/Livelihood/middleware')
 
 /* ----- bootstrap server ----- */
 const app = new Koa()
+// setup app-scoped utility
 app.context.config = config
+app.context.clients = {
+  LINE: new LINEClient(config),
+  Livelihood: new LivelihoodClient(config)
+}
 // use logger
 if (config.logger) {
   const logger = require('koa-logger')
