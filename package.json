@@ -14,7 +14,7 @@
     "url": "https://github.com/StudyNightClub/livelihood-chatbot.git"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon --inspect src/app.js",
+    "dev": "cross-env NODE_ENV=development DEBUG=koa* nodemon --inspect src/app.js",
     "start": "node src/app.js",
     "prettier": "prettier --single-quote --trailing-comma es6 --no-semi --write \"*.js\"",
     "eslint": "eslint src/**",
