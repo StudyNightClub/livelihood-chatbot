@@ -20,18 +20,39 @@ module.exports = () => {
             }
           ]
         }
-        switch (e.type) {
-          case 'reply':
-            return client.replyMessage(e.target, e.message)
-          case 'push':
-            return client.pushMessage(e.target, e.message)
-          default:
-            throw new TypeError('Unknown handler for LINE client!')
-        }
+        return replyUserAgent(client, e)
       })
     )
 
     ctx.state.serviceResponses = results
     ctx.body = {}
+  }
+}
+
+/**
+ * To handle the communication with LINE Message API server
+ * @param {Client} client - Client object of LINE API server
+ * @param {Object} event - The object describe the reply information
+ * @param {String} event.type - The deliver method for the event
+ * @param {String} event.target - The receiver id, maybe replyToken or userId
+ * @param {Object} event.message - The message object for this reply event
+ * @return {Object} - The response body from LINE API server
+ */
+async function replyUserAgent(client, event) {
+  try {
+    switch (event.type) {
+      case 'reply':
+        return await client.replyMessage(event.target, event.message)
+      case 'push':
+        return await client.pushMessage(event.target, event.message)
+      default:
+        throw new TypeError('Unknown handler for LINE client!')
+    }
+  } catch (errorResponse) {
+    if (errorResponse instanceof TypeError) {
+      throw errorResponse
+    }
+    // For other types of error, just pass it currently
+    return errorResponse
   }
 }
