@@ -1,4 +1,5 @@
 const Koa = require('koa')
+const serve = require('koa-static')
 const router = require('./routes')
 const config = require('./config')
 const LINEClient = require('./service/LINE/client')
@@ -21,6 +22,7 @@ if (config.logger) {
   app.use(logger())
   app.use(responsesLogger())
 }
+app.use(serve('public'))
 app.use(errorHandler())
 // use router
 app.use(router.routes())
