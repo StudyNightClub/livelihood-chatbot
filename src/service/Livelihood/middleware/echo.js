@@ -2,7 +2,7 @@ const emoji = require('node-emoji')
 
 module.exports = () => {
   return async (ctx, next) => {
-    const events = ctx.request.events
+    const events = ctx.state.incomingEvents
 
     const respondEvents = events.map(event => {
       switch (event.type) {
@@ -34,7 +34,7 @@ module.exports = () => {
           throw new TypeError('Unknown handled type of incoming event!')
       }
     })
-    ctx.response.events = [...ctx.response.events, ...respondEvents]
+    ctx.state.outgoingEvents = [...ctx.state.outgoingEvents, ...respondEvents]
 
     await next()
   }

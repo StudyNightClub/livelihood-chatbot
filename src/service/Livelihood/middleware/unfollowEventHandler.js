@@ -2,12 +2,12 @@ const LivelihoodServerClient = require('../client')
 
 module.exports = () => {
   return async (ctx, next) => {
-    if (ctx.request.events.every(e => e.type !== 'unfollow')) {
+    if (ctx.state.incomingEvents.every(e => e.type !== 'unfollow')) {
       await next()
       return
     }
     /* separate unfollow and notUnfollow events */
-    const events = ctx.request.events.reduce(
+    const events = ctx.state.incomingEvents.reduce(
       (output, e) => {
         if (e.type === 'unfollow') output.unfollow.push(e)
         else output.notUnfollow.push(e)
@@ -29,7 +29,7 @@ module.exports = () => {
 
     // continuously process events if there exist other events
     if (events.notUnfollow.length > 0) {
-      ctx.request.events = events.notUnfollow
+      ctx.state.incomingEvents = events.notUnfollow
       await next()
     }
   }

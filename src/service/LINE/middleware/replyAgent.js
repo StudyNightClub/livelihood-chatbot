@@ -4,7 +4,7 @@ module.exports = () => {
   return async (ctx, next) => {
     await next()
 
-    const events = ctx.response.events
+    const events = ctx.state.outgoingEvents
     const client = new Client(ctx.config)
 
     const results = await Promise.all(
@@ -34,6 +34,9 @@ module.exports = () => {
       })
     )
 
-    ctx.body = await Promise.all(results.map(result => result.json()))
+    ctx.state.serviceResponses = await Promise.all(
+      results.map(result => result.json())
+    )
+    ctx.body = {}
   }
 }

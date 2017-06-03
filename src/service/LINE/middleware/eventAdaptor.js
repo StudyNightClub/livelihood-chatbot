@@ -16,8 +16,8 @@ module.exports = () => {
       })
     )
 
-    ctx.request.events = events
-    ctx.response.events = []
+    ctx.state.incomingEvents = events
+    ctx.state.outgoingEvents = []
     await next()
   }
 }
