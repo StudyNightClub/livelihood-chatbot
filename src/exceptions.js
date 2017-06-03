@@ -42,3 +42,16 @@ class MessageFormatError extends ExtendableError {
   }
 }
 module.exports.MessageFormatError = MessageFormatError
+
+/** Represent the error of requesting timeout */
+class TimeoutError extends ExtendableError {
+  /**
+   * @constructor
+   * @param {String} msg - The message of the error.
+   */
+  constructor(msg) {
+    super(msg)
+    this.status = 408
+  }
+}
+module.exports.TimeoutError = TimeoutError
