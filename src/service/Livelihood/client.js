@@ -9,7 +9,9 @@ class client {
    */
   constructor(config) {
     if (!config.livelihoodServerRoot) {
-      throw new Error('livelihood server root URL not found!')
+      /* Disable any function if the livelihood server wasn't setting */
+      console.error('[WARNING] Livelihood control server URL not found!') // eslint-disable-line no-console
+      this.post = this.get = this.delete = () => {}
     }
     this.livelihoodRoot = config.livelihoodServerRoot
 

@@ -13,7 +13,7 @@ const fs = require('fs')
   fs.writeFileSync(dest, fs.readFileSync(src, 'utf-8'))
 })(envPath, '.env', fs)
 
-require('dotenv-safe').load()
+require('dotenv-safe').load({ allowEmptyValues: true })
 if (env === 'development') {
   module.exports = require(`./development.js`)
 } else {
