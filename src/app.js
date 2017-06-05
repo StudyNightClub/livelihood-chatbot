@@ -15,6 +15,9 @@ app.context.clients = {
   LINE: new LINEClient(config),
   Livelihood: new LivelihoodClient(config)
 }
+app.context.store = {
+  onboard: new Map()
+}
 // use logger
 if (config.logger) {
   const logger = require('koa-logger')
