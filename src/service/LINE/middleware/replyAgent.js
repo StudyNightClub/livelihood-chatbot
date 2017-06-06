@@ -1,3 +1,5 @@
+const utils = require('../utils')
+
 module.exports = () => {
   return async (ctx, next) => {
     await next()
@@ -19,6 +21,15 @@ module.exports = () => {
               text: `和身分證字號，${e.userId}`
             }
           ]
+        }
+        const carouselMessageIndex = e.message.findIndex(
+          m => m.type === 'carousel'
+        )
+        if (carouselMessageIndex !== -1) {
+          e.message[carouselMessageIndex] = utils.carouselMessageFormatter(
+            e.message[carouselMessageIndex].altText,
+            e.message[carouselMessageIndex].cards
+          )
         }
         return replyUserAgent(client, e)
       })

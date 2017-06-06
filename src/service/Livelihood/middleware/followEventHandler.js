@@ -1,4 +1,5 @@
 const emoji = require('node-emoji')
+const utils = require('../utils')
 
 module.exports = () => {
   return async (ctx, next) => {
@@ -39,7 +40,13 @@ module.exports = () => {
             {
               type: 'text',
               text: emoji.emojify('一起來看看你的周遭，政府正準備偷偷幹嘛:anguished:')
-            }
+            },
+            {
+              type: 'carousel',
+              altText: '試著分享隨意一個位置，看看政府正準備偷偷幹嘛',
+              cards: utils.shareLocationCarouselMessage()
+            },
+            { type: 'text', text: '(左右滑動卡片看看)' }
           ]
         })
         return Promise.resolve(e)
