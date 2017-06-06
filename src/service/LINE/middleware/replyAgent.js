@@ -22,9 +22,9 @@ module.exports = () => {
             }
           ]
         }
-        const carouselMessageIndex = e.message.findIndex(
-          m => m.type === 'carousel'
-        )
+        const carouselMessageIndex = Array.isArray(e.message) === true
+          ? e.message.findIndex(m => m.type === 'carousel')
+          : e.message.type === 'carousel' ? 0 : -1
         if (carouselMessageIndex !== -1) {
           e.message[carouselMessageIndex] = utils.carouselMessageFormatter(
             e.message[carouselMessageIndex].altText,
