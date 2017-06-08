@@ -34,6 +34,7 @@ app.use(router.allowedMethods())
 app.use(livelihood.keeper())
 app.use(livelihood.followEventHandler())
 app.use(livelihood.unfollowEventHandler())
+app.use(livelihood.locationSpotter())
 app.use(livelihood.echo())
 // listen
 app.listen(config.port, () => {

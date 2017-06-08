@@ -28,7 +28,7 @@ function shareLocationCarouselMessage() {
     },
     {
       thumbnailImageUrl: 'https://glacial-falls-53180.herokuapp.com/img/onboarding-shareLocation.png',
-      text: '分享隨意一個位置，看看政府正準備在該地區做的事情',
+      text: '最後請分享隨意一個位置，看看政府正準備做什麼事情',
       actions: [
         {
           type: 'uri',
