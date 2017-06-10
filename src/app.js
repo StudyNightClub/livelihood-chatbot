@@ -15,6 +15,9 @@ app.context.clients = {
   LINE: new LINEClient(config),
   Livelihood: new LivelihoodClient(config)
 }
+app.context.store = {
+  onboard: new Map()
+}
 // use logger
 if (config.logger) {
   const logger = require('koa-logger')
@@ -31,7 +34,8 @@ app.use(router.allowedMethods())
 app.use(livelihood.keeper())
 app.use(livelihood.followEventHandler())
 app.use(livelihood.unfollowEventHandler())
-app.use(livelihood.echo())
+app.use(livelihood.locationSpotter())
+app.use(livelihood.messageEventHandler())
 // listen
 app.listen(config.port, () => {
   console.log(`listening on ${config.port}`) // eslint-disable-line no-console
