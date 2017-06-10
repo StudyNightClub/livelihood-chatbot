@@ -7,7 +7,9 @@ module.exports = () => {
 
     switch (incomingEvent.type) {
       case 'initialize':
-        if (ctx.store.onboard.get(incomingEvent.userId) === 'engaged') {
+        if (
+          ctx.store.onboard.getUserState(incomingEvent.userId) === 'engaged'
+        ) {
           ctx.store.onboard.fire(incomingEvent.userId, 'doneSetting')
           ctx.state.serviceResponses = await lineClient.pushMessage(
             incomingEvent.userId,
