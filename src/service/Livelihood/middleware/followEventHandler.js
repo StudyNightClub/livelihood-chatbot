@@ -48,7 +48,7 @@ module.exports = () => {
             },
             {
               type: 'text',
-              text: '(任意分享一個你有興趣的位置看看)'
+              text: '分享位置訊息教學圖'
             }
           ]
         })
