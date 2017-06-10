@@ -183,9 +183,9 @@ function settingButtonMessage(userId, settingURL) {
     description: '點擊下方按鈕，前往設定頁面',
     actions: [
       {
-        type: 'url',
+        type: 'uri',
         label: '點此前往設定頁面',
-        url: settingURL
+        uri: settingURL
       }
     ],
     thumbnailURL: 'https://glacial-falls-53180.herokuapp.com/img/setting-button.jpg'
@@ -205,9 +205,9 @@ function mapButtonMessage(mapURL) {
     description: '點擊下方按鈕，前往預報頁面',
     actions: [
       {
-        type: 'url',
+        type: 'uri',
         label: '點此前往預報頁面',
-        url: mapURL
+        uri: mapURL
       }
     ],
     thumbnailURL: 'https://glacial-falls-53180.herokuapp.com/img/map-button.jpg'
