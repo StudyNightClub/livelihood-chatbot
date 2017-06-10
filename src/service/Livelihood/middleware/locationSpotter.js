@@ -12,7 +12,9 @@ module.exports = () => {
           latitude: message.latitude,
           longitude: message.longitude
         })
-        ctx.store.onboard.set(event.source.userId, 'engaged') // TODO: create a FSM class wrap this
+        if (ctx.store.onboard.get(event.source.userId)) {
+          ctx.store.onboard.set(event.source.userId, 'engaged') // TODO: create a FSM class wrap this
+        }
         return
       } else if (message.type === 'text') {
         // TODO: handle sharing location with text

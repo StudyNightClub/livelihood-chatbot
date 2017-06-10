@@ -35,7 +35,7 @@ app.use(livelihood.keeper())
 app.use(livelihood.followEventHandler())
 app.use(livelihood.unfollowEventHandler())
 app.use(livelihood.locationSpotter())
-app.use(livelihood.echo())
+app.use(livelihood.messageEventHandler())
 // listen
 app.listen(config.port, () => {
   console.log(`listening on ${config.port}`) // eslint-disable-line no-console
