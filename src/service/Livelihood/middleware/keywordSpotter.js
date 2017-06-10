@@ -27,9 +27,9 @@ module.exports = () => {
             type: 'reply',
             message: utils.mapButtonMessage(
               (async () => {
-                return await ctx.clients.Livelihood.post('/map', {
-                  userId: event.source.userId
-                })
+                return await ctx.clients.Livelihood.get(
+                  `/get_map/${event.source.userId}`
+                )
               })()
             )
           })
