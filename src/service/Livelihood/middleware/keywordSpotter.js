@@ -16,7 +16,7 @@ module.exports = () => {
             event: 'keyword',
             type: 'reply',
             message: utils.settingButtonMessage(
-              ctx.client.Setting.getSettingPageURL(event.source.userId)
+              ctx.clients.Setting.getSettingPageURL(event.source.userId)
             )
           })
           return res
