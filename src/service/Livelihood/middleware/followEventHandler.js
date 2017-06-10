@@ -45,6 +45,10 @@ module.exports = () => {
               type: 'carousel',
               altText: '試著分享隨意一個位置，看看政府正準備偷偷幹嘛',
               cards: utils.shareLocationCarouselMessage()
+            },
+            {
+              type: 'text',
+              text: '(任意分享一個你有興趣的位置看看)'
             }
           ]
         })
