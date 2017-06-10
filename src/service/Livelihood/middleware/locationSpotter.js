@@ -3,7 +3,7 @@ module.exports = () => {
     const incomingEvents = ctx.state.incomingEvents
     const client = ctx.clients.Livelihood
 
-    incomingEvents.forEach((res, event) => {
+    incomingEvents.forEach(event => {
       if (event.type !== 'message') return
 
       const message = event.message
