@@ -12,10 +12,7 @@ module.exports = () => {
           latitude: message.latitude,
           longitude: message.longitude
         })
-        const curUserOnboardState = ctx.store.onboard.get(event.source.userId)
-        if (curUserOnboardState && curUserOnboardState === 'incoming') {
-          ctx.store.onboard.set(event.source.userId, 'engaging') // TODO: create a FSM class wrap this
-        }
+        ctx.store.onboard.fire(event.source.userId, 'sharedLocation')
         return res
       } else if (message.type === 'text') {
         // TODO: handle sharing location with text

@@ -6,6 +6,7 @@ const LINEClient = require('./service/LINE/client')
 const LivelihoodClient = require('./service/Livelihood/client')
 const errorHandler = require('./middleware/errorHandler')
 const livelihood = require('./service/Livelihood/middleware')
+const OnboardingStateManagement = require('./service/Livelihood/store/onboard')
 
 /* ----- bootstrap server ----- */
 const app = new Koa()
@@ -16,7 +17,7 @@ app.context.clients = {
   Livelihood: new LivelihoodClient(config)
 }
 app.context.store = {
-  onboard: new Map()
+  onboard: new OnboardingStateManagement()
 }
 // use logger
 if (config.logger) {

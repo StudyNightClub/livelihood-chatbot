@@ -5,7 +5,7 @@ module.exports = () => {
     const events = ctx.state.incomingEvents
 
     const respondEvents = events.map(event => {
-      if (ctx.store.onboard.get(event.source.userId) === 'incoming') {
+      if (ctx.store.onboard.getUserState(event.source.userId) === 'incoming') {
         return {
           target: event.replyToken,
           type: 'reply',
