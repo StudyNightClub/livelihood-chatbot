@@ -6,15 +6,17 @@ module.exports = () => {
     const respondEvents = []
     const client = ctx.clients.Livelihood
 
-    const noLocationEvents = incomingEvents.reduce(async (res, event) => {
+    const noLocationEvents = incomingEvents.reduce((res, event) => {
       if (event.type !== 'message') return
 
       const message = event.message
       if (message.type === 'location') {
-        const notificationInfo = await client.post('/notification', {
-          latitude: message.latitude,
-          longitude: message.longitude
-        })
+        const notificationInfo = async () => {
+          return await client.post('/notification', {
+            latitude: message.latitude,
+            longitude: message.longitude
+          })
+        }
         if (
           ctx.store.onboard.getUserState(event.source.userId) === 'incoming'
         ) {
