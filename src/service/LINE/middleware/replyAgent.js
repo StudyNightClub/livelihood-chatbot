@@ -22,13 +22,19 @@ module.exports = () => {
             }
           ]
         }
+        // TODO: Fix bad logic here!!!!
         const carouselMessageIndex = Array.isArray(e.message) === true
           ? e.message.findIndex(m => m.type === 'carousel')
           : e.message.type === 'carousel' ? 0 : -1
-        if (carouselMessageIndex !== -1) {
+        if (carouselMessageIndex !== -1 && Array.isArray(e.message) === true) {
           e.message[carouselMessageIndex] = utils.carouselMessageFormatter(
             e.message[carouselMessageIndex].altText,
             e.message[carouselMessageIndex].cards
+          )
+        } else if (Array.isArray(e.message) === false) {
+          e.message = utils.carouselMessageFormatter(
+            e.message.altText,
+            e.message.cards
           )
         }
         return replyUserAgent(client, e)

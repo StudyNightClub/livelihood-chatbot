@@ -5,18 +5,14 @@ module.exports = () => {
     const events = ctx.state.incomingEvents
 
     const respondEvents = events.map(event => {
-      if (ctx.store.onboard.get(event.source.userId) === 'incoming') {
+      if (ctx.store.onboard.getUserState(event.source.userId) === 'incoming') {
         return {
           target: event.replyToken,
           type: 'reply',
           message: [
             {
               type: 'text',
-              text: emoji.emojify('噢:disappointed_relieved:')
-            },
-            {
-              type: 'text',
-              text: emoji.emojify('請先試著分享位置看看，或是直接去個人化設定進行設定呦:yum:')
+              text: emoji.emojify('噢噢，請先試著分享位置看看，或是直接去個人化設定進行設定呦:yum:')
             }
           ]
         }

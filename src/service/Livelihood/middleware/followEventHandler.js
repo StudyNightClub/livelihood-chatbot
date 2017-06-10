@@ -29,7 +29,7 @@ module.exports = () => {
           timestamp: +new Date()
         })
 
-        ctx.store.onboard.set(e.source.userId, 'incoming') // TODO: create a FSM class wrap this
+        ctx.store.onboard.fire(e.source.userId, 'followedMe')
 
         respondEvents.push({
           target: e.replyToken,
@@ -45,6 +45,10 @@ module.exports = () => {
               type: 'carousel',
               altText: '試著分享隨意一個位置，看看政府正準備偷偷幹嘛',
               cards: utils.shareLocationCarouselMessage()
+            },
+            {
+              type: 'text',
+              text: '分享位置訊息教學圖'
             }
           ]
         })
