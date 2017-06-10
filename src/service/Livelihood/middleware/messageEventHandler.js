@@ -16,7 +16,7 @@ module.exports = () => {
             },
             {
               type: 'text',
-              text: emoji.emojify('請先試著分享位置看看，或是直接去個人化設定進行設定呦:relaxed:')
+              text: emoji.emojify('請先試著分享位置看看，或是直接去個人化設定進行設定呦:yum:')
             }
           ]
         }

@@ -3,7 +3,7 @@ module.exports = () => {
     const incomingEvents = ctx.state.incomingEvents
     const client = ctx.clients.Livelihood
 
-    incomingEvents.forEach(event => {
+    const noLocationEvents = incomingEvents.reduce((res, event) => {
       if (event.type !== 'message') return
 
       const message = event.message
@@ -15,12 +15,17 @@ module.exports = () => {
         if (ctx.store.onboard.get(event.source.userId)) {
           ctx.store.onboard.set(event.source.userId, 'engaged') // TODO: create a FSM class wrap this
         }
-        return
+        return res
       } else if (message.type === 'text') {
         // TODO: handle sharing location with text
       }
-    })
 
+      return [...res, event]
+    }, [])
+
+    if (noLocationEvents.length === 0) {
+      return
+    }
     await next()
   }
 }
