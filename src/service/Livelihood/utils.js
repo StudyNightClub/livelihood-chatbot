@@ -172,11 +172,10 @@ module.exports.userRequestedNotification = userRequestedNotification
 
 /**
  * Generate the template of button message for setting
- * @param {String} userId - the id of the requested user
  * @param {String} settingURL - the URL for setting page
  * @return {Object}
  */
-function settingButtonMessage(userId, settingURL) {
+function settingButtonMessage(settingURL) {
   return {
     type: 'button',
     altText: '前往個人化設定頁面',
