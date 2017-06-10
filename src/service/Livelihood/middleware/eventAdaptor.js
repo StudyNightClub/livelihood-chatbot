@@ -1,7 +1,6 @@
 module.exports = () => {
   return async (ctx, next) => {
-    ctx.state.incomingEvents =
-      ctx.request.fields.events || ctx.request.body.events
+    ctx.state.incomingEvent = ctx.request.fields || ctx.request.body
     ctx.state.outgoingEvents = []
     await next()
   }
