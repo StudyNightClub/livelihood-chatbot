@@ -28,12 +28,23 @@ function shareLocationCarouselMessage() {
     },
     {
       thumbnailImageUrl: 'https://glacial-falls-53180.herokuapp.com/img/onboarding-shareLocation.png',
-      text: '最後請分享隨意一個位置，看看政府正準備做什麼事情',
+      text: '找到分享位置訊息按鈕',
       actions: [
         {
           type: 'uri',
           label: '看大圖',
           uri: 'https://glacial-falls-53180.herokuapp.com/img/onboarding-shareLocation.png'
+        }
+      ]
+    },
+    {
+      thumbnailImageUrl: 'https://glacial-falls-53180.herokuapp.com/img/onboarding-yourLocation.png',
+      text: '最後請隨意分享一個位置，看看政府正準備做什麼事情',
+      actions: [
+        {
+          type: 'uri',
+          label: '看大圖',
+          uri: 'https://glacial-falls-53180.herokuapp.com/img/onboarding-yourLocation.png'
         }
       ]
     }
