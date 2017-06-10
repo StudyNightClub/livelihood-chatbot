@@ -12,8 +12,9 @@ module.exports = () => {
           latitude: message.latitude,
           longitude: message.longitude
         })
-        if (ctx.store.onboard.get(event.source.userId)) {
-          ctx.store.onboard.set(event.source.userId, 'engaged') // TODO: create a FSM class wrap this
+        const curUserOnboardState = ctx.store.onboard.get(event.source.userId)
+        if (curUserOnboardState && curUserOnboardState === 'incoming') {
+          ctx.store.onboard.set(event.source.userId, 'engaging') // TODO: create a FSM class wrap this
         }
         return res
       } else if (message.type === 'text') {
