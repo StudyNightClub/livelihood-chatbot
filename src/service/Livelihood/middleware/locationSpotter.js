@@ -24,7 +24,22 @@ module.exports = () => {
           respondEvents.push({
             target: event.replyToken,
             type: 'reply',
-            message: utils.onboardingPushNotification(notificationInfo)
+            message: [
+              utils.onboardingPushNotification(notificationInfo),
+              {
+                type: 'text',
+                text: '左右滑動圖片看看'
+              },
+              {
+                type: 'text',
+                text: '"隨時比別人搶先知道要停水、停電的時間！\n現在就設定：\n<你感興趣的地點>、<不想被打擾的時間>、<想主動收到的通知類型>。\n（還有你家馬路要施工的預報通知喔！）"'
+              },
+              {
+                type: 'image',
+                originalContentUrl: 'https://glacial-falls-53180.herokuapp.com/img/tutorial.png',
+                previewImageUrl: 'https://glacial-falls-53180.herokuapp.com/img/tutorial.png'
+              }
+            ]
           })
         } else {
           respondEvents.push({
