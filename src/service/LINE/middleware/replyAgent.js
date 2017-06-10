@@ -31,7 +31,10 @@ module.exports = () => {
             e.message[carouselMessageIndex].altText,
             e.message[carouselMessageIndex].cards
           )
-        } else if (Array.isArray(e.message) === false) {
+        } else if (
+          Array.isArray(e.message) === false &&
+          e.message.type === 'carousel'
+        ) {
           e.message = utils.carouselMessageFormatter(
             e.message.altText,
             e.message.cards
