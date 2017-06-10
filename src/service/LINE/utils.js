@@ -49,3 +49,33 @@ function carouselMessageFormatter(altText, cards) {
   }
 }
 module.exports.carouselMessageFormatter = carouselMessageFormatter
+
+/**
+ * Generate the json object for LINE button type message
+ * @param {String} altText - The altText for this carousel message
+ * @param {String} description - The description of the message
+ * @param {Array} actions - The buttons of the message
+ * @param {String} title - The title of the message
+ * @param {String} thumbnailURL - The URL path of the thumbnail
+ * @return {Object} 
+ */
+function buttonMessageFormatter(
+  altText,
+  description,
+  actions,
+  title = null,
+  thumbnailURL = null
+) {
+  return {
+    type: 'template',
+    altText: altText,
+    template: {
+      type: 'buttons',
+      thumbnailImageUrl: thumbnailURL,
+      title: title,
+      text: description,
+      actions: actions
+    }
+  }
+}
+module.exports.buttonMessageFormatter = buttonMessageFormatter

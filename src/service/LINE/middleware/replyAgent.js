@@ -37,6 +37,16 @@ module.exports = () => {
             e.message.cards
           )
         }
+
+        if (e.message.type === 'button') {
+          e.message = utils.buttonMessageFormatter(
+            e.message.altText,
+            e.message.description,
+            e.message.actions,
+            e.message.title,
+            e.message.thumbnailURL
+          )
+        }
         return replyUserAgent(client, e)
       })
     )
