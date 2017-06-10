@@ -40,3 +40,18 @@ function shareLocationCarouselMessage() {
   ]
 }
 module.exports.shareLocationCarouselMessage = shareLocationCarouselMessage
+
+/**
+ * Filter the address to district resolution
+ * @param {String} address - The address user shared, could be Chinese or English
+ * @return {String}
+ */
+function locationFilter(address) {
+  const chineseDistIndex = address.indexOf('區')
+  if (chineseDistIndex !== -1) {
+    return address.slice(3, chineseDistIndex + 1)
+  } else {
+    return address.match(/, ([^,]+District.+)\s\d{5}/)[1]
+  }
+}
+module.exports.locationFilter = locationFilter

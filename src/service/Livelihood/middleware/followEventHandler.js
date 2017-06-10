@@ -29,7 +29,7 @@ module.exports = () => {
           timestamp: +new Date()
         })
 
-        ctx.store.onboard.set(e.source.userId, 'incoming')
+        ctx.store.onboard.set(e.source.userId, 'incoming') // TODO: create a FSM class wrap this
 
         respondEvents.push({
           target: e.replyToken,
