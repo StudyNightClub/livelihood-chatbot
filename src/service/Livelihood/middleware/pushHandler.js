@@ -117,7 +117,7 @@ function notificationFactory(rawNotification) {
       ) {
         return noNotificationsMessage()
       } else {
-        return userRequestedFormMessage(rawNotification)
+        return userRequestedFormMessageOneTypeOneNotify(rawNotification)
       }
     case 'userScheduled':
     case 'systemScheduled':
