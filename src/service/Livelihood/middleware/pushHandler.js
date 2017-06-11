@@ -56,10 +56,6 @@ module.exports = () => {
             [
               {
                 type: 'text',
-                text: '(這個是有的嗎)'
-              },
-              {
-                type: 'text',
                 text: emoji.emojify(
                   '不過沒關係，我是生活 Chat 寶:blush:\n幫助您搶先知道未來停水、停電、以及道路搶修的時間！'
                 )
