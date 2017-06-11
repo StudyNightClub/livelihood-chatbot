@@ -1,12 +1,15 @@
 const lineCarouselTemplate = require('../../LINE/utils')
   .carouselMessageFormatter
+const MessageFormatError = require('../../../exceptions').MessageFormatError
 
 module.exports = () => {
   return async (ctx, next) => {
     const lineClient = ctx.clients.LINE
     const rawNotification = ctx.state.incomingEvent
-    const pushNotifications = notificationFactory(rawNotification)
 
+    isRawNotificationValid(rawNotification)
+
+    const pushNotifications = notificationFactory(rawNotification)
     try {
       ctx.state.serviceResponses = [
         await lineClient.pushMessage(rawNotification.userId, [
@@ -18,6 +21,18 @@ module.exports = () => {
     } catch (err) {
       ctx.response.status = 400
     }
+  }
+}
+
+function isRawNotificationValid(rawNotification) {
+  if (!rawNotification.category) {
+    throw new MessageFormatError('body must contain category attribute!')
+  }
+  if (
+    !rawNotification.notifications ||
+    rawNotification.notifications.length <= 0
+  ) {
+    throw new MessageFormatError('notification must existed and contain data')
   }
 }
 
