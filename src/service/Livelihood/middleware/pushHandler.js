@@ -39,13 +39,13 @@ module.exports = () => {
               {
                 type: 'text',
                 text: emoji.emojify(
-                  '嗯！我是生活 Chat 寶:blush:\n幫助您搶先知道未來停水、停電、以及道路搶修時間！'
+                  '嗯！我是生活 Chat 寶:blush:\n幫助您搶先知道未來停水、停電、以及道路搶修的時間！'
                 )
               },
               {
                 type: 'text',
                 text: emoji.emojify(
-                  '現在就點開下方選單 -> 進入個人化設定，你可以就收到特別為你設計的民生推播通知。（也有你家外面馬路要施工的預報通知喔！）:point_down:'
+                  '現在就點選左下方按鈕 -> 開啟預報及設定-> 進入個人化設定。\n完成後就可以收到特別為你設計的民生停水、停電預報通知喔。（還有你家馬路外面施工的預報通知喔！）:point_down:'
                 )
               }
             ]
@@ -56,18 +56,18 @@ module.exports = () => {
             [
               {
                 type: 'text',
-                text: emoji.emojify('咦？您所選擇的地點附近好像是安全地帶...')
+                text: '(這個是有的嗎)'
               },
               {
                 type: 'text',
                 text: emoji.emojify(
-                  '不過沒關係，我是生活 Chat 寶:blush:\n幫助您搶先知道未來停水、停電、以及道路搶修時間！'
+                  '不過沒關係，我是生活 Chat 寶:blush:\n幫助您搶先知道未來停水、停電、以及道路搶修的時間！'
                 )
               },
               {
                 type: 'text',
                 text: emoji.emojify(
-                  '現在就點開下方選單 -> 進入個人化設定，你可以就收到特別為你設計的民生推播通知。（也有你家外面馬路要施工的預報通知喔！）:point_down:'
+                  '現在就點選左下方按鈕 -> 開啟預報及設定-> 進入個人化設定。\n完成後就可以收到特別為你設計的民生停水、停電預報通知喔。（還有你家馬路外面施工的預報通知喔！）:point_down:'
                 )
               }
             ]
@@ -135,7 +135,7 @@ function notificationFactory(rawNotification) {
 function noNotificationsMessage() {
   return {
     type: 'text',
-    text: '關於您所選擇的地點，目前附近沒有任何民生公告喔！'
+    text: '您所選擇的地點，目前附近沒有政府預定的民生公告訊息喔！'
   }
 }
 
