@@ -4,14 +4,15 @@ module.exports = () => {
   return async (ctx, next) => {
     const lineClient = ctx.clients.LINE
     const incomingEvent = ctx.state.incomingEvent
+    const userId = incomingEvent.userId || incomingEvent.id
 
     // switch (incomingEvent.type) {
     //   case 'initialize':
-    if (ctx.store.onboard.getUserState(incomingEvent.userId)) {
-      ctx.store.onboard.fire(incomingEvent.userId, 'doneSetting')
+    if (ctx.store.onboard.getUserState(userId)) {
+      ctx.store.onboard.fire(userId, 'doneSetting')
       ctx.state.serviceResponses = [
         ...(ctx.state.serviceResponses || []),
-        await lineClient.pushMessage(incomingEvent.userId, [
+        await lineClient.pushMessage(userId, [
           {
             type: 'text',
             text: emoji.emojify('太好了，你已經設定完成囉:sparkles:')
