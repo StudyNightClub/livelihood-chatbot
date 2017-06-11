@@ -27,11 +27,12 @@ module.exports = () => {
       ctx.state.serviceResponses = [serviceResponse]
 
       if (
-        ctx.store.onboard.fire(
+        ctx.store.onboard.getUserState(
           rawNotification.userId,
           'receivedNotification'
-        ) === 'engaged'
+        ) === 'engaging'
       ) {
+        ctx.store.onboard.fire(rawNotification.userId, 'receivedNotification')
         if (pushNotifications.altText) {
           serviceResponse = await lineClient.pushMessage(
             rawNotification.userId,
