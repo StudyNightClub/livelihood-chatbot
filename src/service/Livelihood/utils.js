@@ -209,7 +209,7 @@ function mapButtonMessage(mapURL) {
         uri: mapURL
       }
     ],
-    thumbnailURL: 'https://glacial-falls-53180.herokuapp.com/img/map-button.png'
+    thumbnailURL: 'https://glacial-falls-53180.herokuapp.com/img/map-button.jpg'
   }
 }
 module.exports.mapButtonMessage = mapButtonMessage
