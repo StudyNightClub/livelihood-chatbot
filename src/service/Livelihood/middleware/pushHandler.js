@@ -1,6 +1,7 @@
 const lineCarouselTemplate = require('../../LINE/utils')
   .carouselMessageFormatter
 const MessageFormatError = require('../../../exceptions').MessageFormatError
+const emoji = require('node-emoji')
 
 module.exports = () => {
   return async (ctx, next) => {
@@ -36,7 +37,15 @@ module.exports = () => {
             rawNotification.userId,
             {
               type: 'text',
-              text: '我是生活 Chat 寶:blush:\n幫助您搶先知道未來停水、停電、以及道路搶修時間！記得點擊下方<預報及設定>選單進行個人化設定喔:point_down:'
+              text: emoji.emojify(
+                '嗯！我是生活 Chat 寶:blush:\n幫助您搶先知道未來停水、停電、以及道路搶修時間！'
+              )
+            },
+            {
+              type: 'text',
+              text: emoji.emojify(
+                '現在就點開下方選單 -> 進入個人化設定，你可以就收到特別為你設計的民生推播通知。（也有你家外面馬路要施工的預報通知喔！）:point_down:'
+              )
             }
           )
         } else {
@@ -44,7 +53,19 @@ module.exports = () => {
             rawNotification.userId,
             {
               type: 'text',
-              text: '咦？您所選擇的地點附近好像是安全地帶...\n不過沒關係，我是生活 Chat 寶:blush:\n幫助您搶先知道未來停水、停電、以及道路搶修時間！記得點擊下方<預報及設定>選單進行個人化設定喔:point_down:'
+              text: emoji.emojify('咦？您所選擇的地點附近好像是安全地帶...')
+            },
+            {
+              type: 'text',
+              text: emoji.emojify(
+                '不過沒關係，我是生活 Chat 寶:blush:\n幫助您搶先知道未來停水、停電、以及道路搶修時間！'
+              )
+            },
+            {
+              type: 'text',
+              text: emoji.emojify(
+                '現在就點開下方選單 -> 進入個人化設定，你可以就收到特別為你設計的民生推播通知。（也有你家外面馬路要施工的預報通知喔！）:point_down:'
+              )
             }
           )
         }
