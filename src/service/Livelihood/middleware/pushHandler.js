@@ -24,6 +24,10 @@ module.exports = () => {
   }
 }
 
+/**
+ * Validate incoming raw data for pushing notification and throw exception if failed
+ * @param {Object} rawNotification - Incoming raw data for pushing
+ */
 function isRawNotificationValid(rawNotification) {
   if (!rawNotification.category) {
     throw new MessageFormatError('body must contain category attribute!')
@@ -36,6 +40,11 @@ function isRawNotificationValid(rawNotification) {
   }
 }
 
+/**
+ * Generate pushing message depending on the category of request
+ * @param {Object} rawNotification - Incoming raw data for pushing
+ * @return {Object}
+ */
 function notificationFactory(rawNotification) {
   switch (rawNotification.category) {
     case 'userRequested':
@@ -48,6 +57,11 @@ function notificationFactory(rawNotification) {
   }
 }
 
+/**
+ * Generate the userRequested category of push notification
+ * @param {Object} raw - Incoming raw data for pushing
+ * @return {Object}
+ */
 function userRequestedFormMessage(raw) {
   const notificationsByTypes = {}
   raw.notifications.forEach(notification => {
@@ -80,6 +94,12 @@ function userRequestedFormMessage(raw) {
   return lineCarouselTemplate(altText, cards)
 }
 
+/**
+ * Generate the description of card of carousel message depending on type of the notification
+ * @param {String} type - type of the notification
+ * @param {Object} notifications - notifications in same types
+ * @return {String}
+ */
 function notificationDetailFactory(type, notifications) {
   switch (type) {
     case 'water_outage':
@@ -92,6 +112,11 @@ function notificationDetailFactory(type, notifications) {
   }
 }
 
+/**
+ * Generate the description of card of carousel message on waterOutage and powerOutage type
+ * @param {Array} notifications - notifications in same waterOutage and powerOutage type
+ * @return {String}
+ */
 function waterPowerOutageContent(notifications) {
   return notifications.reduce((output, notify) => {
     if (output) output += '\n'
@@ -99,6 +124,11 @@ function waterPowerOutageContent(notifications) {
   }, '')
 }
 
+/**
+ * Generate the description of card of carousel message on roadWork type
+ * @param {Array} notifications - notifications in same roadWork type
+ * @return {String}
+ */
 function roadWorkContent(notifications) {
   return notifications.reduce((output, notify) => {
     if (output) output += '\n'
@@ -109,6 +139,11 @@ function roadWorkContent(notifications) {
   }, '')
 }
 
+/**
+ * Generate the altText of the carousel message
+ * @param {Object} notificationsByTypes - notifications with different types as its attribute
+ * @return {String}
+ */
 function altTextTemplate(notificationsByTypes) {
   const typeCounts =
     (notificationsByTypes['water_outage'] ? 1 : 0) +
@@ -141,6 +176,11 @@ function altTextTemplate(notificationsByTypes) {
   return `生活 Chat 寶：您明天有 ${waterOutageNotify}${powerOutageNotify}${roadWorkNotify}${totalNotifyText}。`
 }
 
+/**
+ * Return the thumbnail image URL for different type of notifications
+ * @param {String} type - type of the notification
+ * @return {String}
+ */
 function thumbnailFactory(type) {
   switch (type) {
     case 'water_outage':
@@ -154,6 +194,11 @@ function thumbnailFactory(type) {
   }
 }
 
+/**
+ * Return the Chinese name of different type of notifications
+ * @param {String} type - type of the notification
+ * @return {String}
+ */
 function notificationTypeFactory(type) {
   switch (type) {
     case 'water_outage':
