@@ -31,17 +31,30 @@ module.exports = () => {
             e.message[carouselMessageIndex].altText,
             e.message[carouselMessageIndex].cards
           )
-        } else if (Array.isArray(e.message) === false) {
+        } else if (
+          Array.isArray(e.message) === false &&
+          e.message.type === 'carousel'
+        ) {
           e.message = utils.carouselMessageFormatter(
             e.message.altText,
             e.message.cards
+          )
+        }
+
+        if (e.message.type === 'button') {
+          e.message = utils.buttonMessageFormatter(
+            e.message.altText,
+            e.message.description,
+            e.message.actions,
+            e.message.title,
+            e.message.thumbnailURL
           )
         }
         return replyUserAgent(client, e)
       })
     )
 
-    ctx.state.serviceResponses = results
+    ctx.state.serviceResponses = [...ctx.state.serviceResponses, results]
     ctx.body = {}
   }
 }

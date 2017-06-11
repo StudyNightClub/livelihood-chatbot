@@ -17,10 +17,11 @@ module.exports = () => {
     // wait until all unfollow events were handled
     await Promise.all(
       events.unfollow.map(async e => {
-        /* post new user info to livelihood control server */
-        const livelihoodClient = ctx.clients.Livelihood
-        // TODO: handle connection error with livelihood control server
-        await livelihoodClient.delete(`/user/${e.source.userId}`)
+        /* ----- CURRENTLY DO NOTHING WHEN USER UNFOLLOW ----- */
+        // /* post new user info to livelihood control server */
+        // const livelihoodClient = ctx.clients.Livelihood
+        // // TODO: handle connection error with livelihood control server
+        // await livelihoodClient.delete(`/user/${e.source.userId}`)
         return Promise.resolve(e)
       })
     )

@@ -21,37 +21,42 @@ module.exports = () => {
     // wait until all follow events were handled
     await Promise.all(
       events.follow.map(async e => {
-        const livelihoodClient = ctx.clients.Livelihood
-        // TODO: handle connection error with livelihood control server
-        await livelihoodClient.post('/user', {
-          userId: e.source.userId,
-          userNickname: e.source.profile.displayName,
-          timestamp: +new Date()
-        })
+        const settingClient = ctx.clients.Setting
+        // TODO: handle connection error with setting server
+        const settingResponse = await settingClient.createNewUser(
+          e.source.userId,
+          e.source.profile.displayName
+        )
+        ctx.state.serviceResponses = [
+          ...ctx.state.serviceResponses,
+          settingResponse
+        ]
+        // For new coming user
+        if (settingResponse.includes('already exists') === false) {
+          ctx.store.onboard.fire(e.source.userId, 'followedMe')
+          respondEvents.push({
+            target: e.replyToken,
+            event: 'follow',
+            type: 'reply',
+            message: [
+              { type: 'text', text: `${e.source.profile.displayName} 您好` },
+              {
+                type: 'text',
+                text: emoji.emojify('一起來看看你的周遭，政府正準備偷偷幹嘛:anguished:')
+              },
+              {
+                type: 'carousel',
+                altText: '試著分享隨意一個位置，看看政府正準備偷偷幹嘛',
+                cards: utils.shareLocationCarouselMessage()
+              },
+              {
+                type: 'text',
+                text: '分享位置訊息教學圖'
+              }
+            ]
+          })
+        }
 
-        ctx.store.onboard.fire(e.source.userId, 'followedMe')
-
-        respondEvents.push({
-          target: e.replyToken,
-          event: 'follow',
-          type: 'reply',
-          message: [
-            { type: 'text', text: `${e.source.profile.displayName} 您好` },
-            {
-              type: 'text',
-              text: emoji.emojify('一起來看看你的周遭，政府正準備偷偷幹嘛:anguished:')
-            },
-            {
-              type: 'carousel',
-              altText: '試著分享隨意一個位置，看看政府正準備偷偷幹嘛',
-              cards: utils.shareLocationCarouselMessage()
-            },
-            {
-              type: 'text',
-              text: '分享位置訊息教學圖'
-            }
-          ]
-        })
         return Promise.resolve(e)
       })
     )

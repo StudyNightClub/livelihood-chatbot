@@ -15,23 +15,66 @@ class client {
     }
     this.livelihoodRoot = config.livelihoodServerRoot
 
+    this.userRequestNotification = this.userRequestNotification.bind(this)
+    this.requestMapButtonURL = this.requestMapButtonURL.bind(this)
+
     this.post = this.post.bind(this)
     this.get = this.get.bind(this)
     this.delete = this.delete.bind(this)
   }
 
   /**
+   * Request Livelihood control server to push tomorrow notification with specific location
+   * @param {String} userId - The id of the user
+   * @param {Number} latitude - The latitude info of the location user requested
+   * @param {Number} longitude - The longitude info of the location user requested
+   * @return {Promise}
+   */
+  userRequestNotification(userId, latitude, longitude) {
+    return client.post(
+      `/notify_here/${userId}`,
+      {
+        data: {
+          latitude,
+          longitude
+        }
+      },
+      'application/x-www-form-urlencoded'
+    )
+  }
+
+  /**
+   * Request the map URL for map button in rich content menu
+   * @param {String} userId - The id of the user
+   * @return {Promise}
+   */
+  requestMapButtonURL(userId) {
+    return client.get(`/get_map/${userId}`)
+  }
+
+  /**
    * request livelihood server with POST method
    * @param {String} url - The url where request would sent to 
    * @param {Object} body - The javascript object that would sent 
+   * @param {String} contentType - The format of data we send
    * @return {Promise}
    */
-  post(url, body) {
+  post(url, body, contentType = 'application/json') {
+    let bodyData
+    if (contentType === 'application/x-www-form-urlencoded') {
+      bodyData = Object.keys(body)
+        .map(key => {
+          return encodeURIComponent(key) + '=' + encodeURIComponent(body[key])
+        })
+        .join('&')
+    } else {
+      bodyData = JSON.stringify(body)
+    }
     return request(
       new Request(`${this.livelihoodRoot}${url}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        headers: { 'Content-Type': contentType },
+        body: bodyData
       })
     )
   }
@@ -62,5 +105,4 @@ class client {
     )
   }
 }
-
 module.exports = client

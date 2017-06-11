@@ -4,6 +4,7 @@ const router = require('./routes')
 const config = require('./config')
 const LINEClient = require('./service/LINE/client')
 const LivelihoodClient = require('./service/Livelihood/client')
+const SettingClient = require('./service/Setting/client')
 const errorHandler = require('./middleware/errorHandler')
 const livelihood = require('./service/Livelihood/middleware')
 const OnboardingStateManagement = require('./service/Livelihood/store/onboard')
@@ -14,7 +15,8 @@ const app = new Koa()
 app.context.config = config
 app.context.clients = {
   LINE: new LINEClient(config),
-  Livelihood: new LivelihoodClient(config)
+  Livelihood: new LivelihoodClient(config),
+  Setting: new SettingClient(config)
 }
 app.context.store = {
   onboard: new OnboardingStateManagement()
@@ -35,6 +37,7 @@ app.use(router.allowedMethods())
 app.use(livelihood.keeper())
 app.use(livelihood.followEventHandler())
 app.use(livelihood.unfollowEventHandler())
+app.use(livelihood.keywordSpotter())
 app.use(livelihood.locationSpotter())
 app.use(livelihood.messageEventHandler())
 // listen

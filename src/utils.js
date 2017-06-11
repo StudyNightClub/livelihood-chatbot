@@ -56,6 +56,7 @@ function fetchResolver(requestInfo) {
 function fetchResponseHandler(response) {
   switch (response.headers.get('Content-Type')) {
     case 'text/html':
+    case 'text/html; charset=utf-8':
       return response.text()
     case 'application/json':
     case 'application/json;charset=UTF-8':

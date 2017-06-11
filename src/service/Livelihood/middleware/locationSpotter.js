@@ -12,10 +12,11 @@ module.exports = () => {
       const message = event.message
       if (message.type === 'location') {
         const notificationInfo = async () => {
-          return await client.post('/notification', {
-            latitude: message.latitude,
-            longitude: message.longitude
-          })
+          return await client.userRequestNotification(
+            event.source.userId,
+            message.latitude,
+            message.longitude
+          )
         }
         if (
           ctx.store.onboard.getUserState(event.source.userId) === 'incoming'

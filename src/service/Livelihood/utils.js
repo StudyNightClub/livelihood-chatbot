@@ -171,6 +171,50 @@ function userRequestedNotification(info) {
 module.exports.userRequestedNotification = userRequestedNotification
 
 /**
+ * Generate the template of button message for setting
+ * @param {String} settingURL - the URL for setting page
+ * @return {Object}
+ */
+function settingButtonMessage(settingURL) {
+  return {
+    type: 'button',
+    altText: '前往個人化設定頁面',
+    description: '點擊下方按鈕，前往設定頁面',
+    actions: [
+      {
+        type: 'uri',
+        label: '點此前往設定頁面',
+        uri: settingURL
+      }
+    ],
+    thumbnailURL: 'https://glacial-falls-53180.herokuapp.com/img/setting-button.jpg'
+  }
+}
+module.exports.settingButtonMessage = settingButtonMessage
+
+/**
+ * Generate the template of button message for map
+ * @param {String} mapURL - the URL for map page
+ * @return {Object}
+ */
+function mapButtonMessage(mapURL) {
+  return {
+    type: 'button',
+    altText: '前往預報地圖頁面',
+    description: '點擊下方按鈕，前往預報頁面',
+    actions: [
+      {
+        type: 'uri',
+        label: '點此前往預報頁面',
+        uri: mapURL
+      }
+    ],
+    thumbnailURL: 'https://glacial-falls-53180.herokuapp.com/img/map-button.jpg'
+  }
+}
+module.exports.mapButtonMessage = mapButtonMessage
+
+/**
  * Filter the address to district resolution
  * @param {String} address - The address user shared, could be Chinese or English
  * @return {String}
