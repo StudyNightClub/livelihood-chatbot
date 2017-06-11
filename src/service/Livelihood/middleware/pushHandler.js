@@ -7,7 +7,7 @@ module.exports = () => {
   return async (ctx, next) => {
     const lineClient = ctx.clients.LINE
     const rawNotification = ctx.state.incomingEvent
-    console.log(JSON.stringify(rawNotification))
+
     isRawNotificationValid(rawNotification)
 
     const pushNotifications = notificationFactory(rawNotification)
@@ -135,6 +135,11 @@ function noNotificationsMessage() {
   }
 }
 
+/**
+ * Generate the userRequested category of push notification one by one category
+ * @param {Object} raw - Incoming raw data for pushing
+ * @return {Object}
+ */
 function userRequestedFormMessageOneTypeOneNotify(raw) {
   const notificationsByTypes = {}
   raw.notifications.forEach(notification => {
@@ -169,6 +174,12 @@ function userRequestedFormMessageOneTypeOneNotify(raw) {
   return lineCarouselTemplate(altText, cards)
 }
 
+/**
+ * Generate the description of card of carousel message depending on type of the notification
+ * @param {String} type - the type of the notification
+ * @param {Array} notifications - notifications in same type
+ * @return {Object}
+ */
 function notificationNearestDateFactory(type, notifications) {
   const nearestNotification = findNearestEndNotification(notifications)
   switch (type) {
@@ -182,6 +193,11 @@ function notificationNearestDateFactory(type, notifications) {
   }
 }
 
+/**
+ * Find the nearest date time notification compared with now 
+ * @param {Array} notifications - notifications in same type
+ * @return {Object}
+ */
 function findNearestEndNotification(notifications) {
   const notifyEndMilliseconds = notifications.map(notification => {
     if (notification.endTime)
@@ -266,6 +282,11 @@ function waterPowerOutageContent(notifications) {
   }, '')
 }
 
+/**
+ * Convert the year format to chinese year format
+ * @param {Number} year - the number of the year
+ * @return {Number}
+ */
 function convertToChineseYear(year) {
   return year - 1911
 }
