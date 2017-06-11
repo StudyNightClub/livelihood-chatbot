@@ -21,13 +21,12 @@ module.exports = () => {
     // wait until all follow events were handled
     await Promise.all(
       events.follow.map(async e => {
-        const livelihoodClient = ctx.clients.Livelihood
+        const settingClient = ctx.clients.Setting
         // TODO: handle connection error with livelihood control server
-        await livelihoodClient.post('/user', {
-          userId: e.source.userId,
-          userNickname: e.source.profile.displayName,
-          timestamp: +new Date()
-        })
+        await settingClient.createNewUser(
+          e.source.userId,
+          e.source.profile.displayName
+        )
 
         ctx.store.onboard.fire(e.source.userId, 'followedMe')
 
