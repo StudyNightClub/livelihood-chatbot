@@ -86,7 +86,10 @@ function isRawNotificationValid(rawNotification) {
 function notificationFactory(rawNotification) {
   switch (rawNotification.category) {
     case 'userRequested':
-      if (!rawNotification.notifications) {
+      if (
+        !rawNotification.notifications ||
+        rawNotification.notifications.length === 0
+      ) {
         return noNotificationsMessage()
       } else {
         return userRequestedFormMessage(rawNotification)
