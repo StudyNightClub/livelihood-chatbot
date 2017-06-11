@@ -266,7 +266,7 @@ function waterPowerOutageContent(notifications) {
     const endChineseYear = convertToChineseYear(
       parseInt(notify.endDate.slice(0, 4), 10)
     )
-    return (output += `${startChineseYear} / ${notify.startDate.slice(5)} ～ ${endChineseYear} / ${notify.endDate.slice(5)}\n${notify.startTime} ～ ${notify.endTime}\n${notify.addrRoad}`)
+    return (output += `${startChineseYear}/${notify.startDate.slice(5)} ～ ${endChineseYear}/${notify.endDate.slice(5)}\n${notify.startTime} ～ ${notify.endTime}\n${notify.addrRoad}`)
   }, '')
 }
 
@@ -283,7 +283,7 @@ function roadWorkContent(notifications) {
   return notifications.reduce((output, notify) => {
     if (output) output += '\n'
     const timeContent = notify.startTime && notify.endTime
-      ? `${notify.startTime}~${notify.endTime}`
+      ? `${notify.startTime} ~ ${notify.endTime}`
       : '依交通管制時間施工'
     const startChineseYear = convertToChineseYear(
       parseInt(notify.startDate.slice(0, 4), 10)
@@ -291,7 +291,7 @@ function roadWorkContent(notifications) {
     const endChineseYear = convertToChineseYear(
       parseInt(notify.endDate.slice(0, 4), 10)
     )
-    return (output += `${startChineseYear} / ${notify.startDate.slice(5)} ～ ${endChineseYear} / ${notify.endDate.slice(5)}\n${timeContent}\n${notify.addrRoad}`)
+    return (output += `${startChineseYear}/${notify.startDate.slice(5)} ～ ${endChineseYear}/${notify.endDate.slice(5)}\n${timeContent}\n${notify.addrRoad}`)
   }, '')
 }
 
