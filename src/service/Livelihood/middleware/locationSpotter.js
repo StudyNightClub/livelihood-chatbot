@@ -1,5 +1,3 @@
-const utils = require('../utils')
-
 module.exports = () => {
   return async (ctx, next) => {
     const incomingEvents = ctx.state.incomingEvents
@@ -11,8 +9,8 @@ module.exports = () => {
 
       const message = event.message
       if (message.type === 'location') {
-        ctx.state.serviceResponse = [
-          ...ctx.state.serviceResponse,
+        ctx.state.serviceResponses = [
+          ...ctx.state.serviceResponses,
           (async () =>
             await client.userRequestNotification(
               event.source.userId,
