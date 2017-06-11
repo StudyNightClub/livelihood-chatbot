@@ -7,7 +7,7 @@ module.exports = () => {
   return async (ctx, next) => {
     const lineClient = ctx.clients.LINE
     const rawNotification = ctx.state.incomingEvent
-
+    console.log(JSON.stringify(rawNotification))
     isRawNotificationValid(rawNotification)
 
     const pushNotifications = notificationFactory(rawNotification)
@@ -266,7 +266,7 @@ function waterPowerOutageContent(notifications) {
     const endChineseYear = convertToChineseYear(
       parseInt(notify.endDate.slice(0, 4), 10)
     )
-    return (output += `${startChineseYear}/${notify.startDate.slice(5)}~${endChineseYear}/${notify.endDate.slice(5)}\n${notify.startTime}~${notify.endTime}\n${notify.addrRoad}`)
+    return (output += `${startChineseYear} / ${notify.startDate.slice(5)} ～ ${endChineseYear} / ${notify.endDate.slice(5)}\n${notify.startTime} ～ ${notify.endTime}\n${notify.addrRoad}`)
   }, '')
 }
 
@@ -285,7 +285,13 @@ function roadWorkContent(notifications) {
     const timeContent = notify.startTime && notify.endTime
       ? `${notify.startTime}~${notify.endTime}`
       : '依交通管制時間施工'
-    return (output += `${notify.startDate.slice(5)}~${notify.endDate.slice(5)} ${timeContent}\n${notify.addrRoad}`)
+    const startChineseYear = convertToChineseYear(
+      parseInt(notify.startDate.slice(0, 4), 10)
+    )
+    const endChineseYear = convertToChineseYear(
+      parseInt(notify.endDate.slice(0, 4), 10)
+    )
+    return (output += `${startChineseYear} / ${notify.startDate.slice(5)} ～ ${endChineseYear} / ${notify.endDate.slice(5)}\n${timeContent}\n${notify.addrRoad}`)
   }, '')
 }
 
@@ -321,9 +327,9 @@ function altTextTemplate(notificationsByTypes) {
     : ''
 
   const totalCounts = waterOutageCount + powerOutageCount + roadWorkCount
-  const totalNotifyText = typeCounts > 1 ? `，共 ${totalCounts} 則公告訊息` : ''
+  const totalNotifyText = typeCounts > 1 ? `，共 ${totalCounts} 則通知` : ''
 
-  return `您明天有 ${waterOutageNotify}${powerOutageNotify}${roadWorkNotify}${totalNotifyText}。`
+  return `您明天有 ${waterOutageNotify}${powerOutageNotify}${roadWorkNotify}${totalNotifyText}。快來查看內容，好提早準備喔。`
 }
 
 /**
@@ -356,7 +362,7 @@ function notificationTypeFactory(type) {
     case 'power_outage':
       return '停電'
     case 'road_work':
-      return '修路'
+      return '道路施工'
     default:
       throw new TypeError('Unknown type of notification!')
   }
