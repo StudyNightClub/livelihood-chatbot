@@ -31,7 +31,7 @@ class client {
    * @return {Promise}
    */
   userRequestNotification(userId, latitude, longitude) {
-    return client.post(
+    return this.post(
       `/notify_here/${userId}`,
       {
         data: {
@@ -49,7 +49,7 @@ class client {
    * @return {Promise}
    */
   requestMapButtonURL(userId) {
-    return client.get(`/get_map/${userId}`)
+    return this.get(`/get_map/${userId}`)
   }
 
   /**
