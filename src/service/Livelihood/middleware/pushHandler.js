@@ -329,7 +329,7 @@ function altTextTemplate(notificationsByTypes) {
   const totalCounts = waterOutageCount + powerOutageCount + roadWorkCount
   const totalNotifyText = typeCounts > 1 ? `，共 ${totalCounts} 則通知` : ''
 
-  return `您明天有 ${waterOutageNotify}${powerOutageNotify}${roadWorkNotify}${totalNotifyText}。快來查看內容，好提早準備喔。`
+  return `您明天有 ${waterOutageNotify}${powerOutageNotify}${roadWorkNotify}${totalNotifyText}。快來查看內容，好提早準備喔！`
 }
 
 /**
