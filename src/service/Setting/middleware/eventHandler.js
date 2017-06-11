@@ -7,7 +7,7 @@ module.exports = () => {
 
     // switch (incomingEvent.type) {
     //   case 'initialize':
-    if (ctx.store.onboard.getUserState(incomingEvent.userId) === 'engaged') {
+    if (ctx.store.onboard.getUserState(incomingEvent.userId)) {
       ctx.store.onboard.fire(incomingEvent.userId, 'doneSetting')
       ctx.state.serviceResponses = [
         ...(ctx.state.serviceResponses || []),
@@ -19,7 +19,7 @@ module.exports = () => {
           {
             type: 'text',
             text: emoji.emojify(
-              '本服務將會根據你的個人化設定，適時推播各種政府民生公告喔！\n讓你不會再被突然的停水、停電、及道路搶修給困擾到，快適的度過每一天:wink:'
+              '生活 Chat 寶會根據您的個人設定，適時推播各類政府民生公告。\n讓你不再被突然的停水、停電、及道路搶修給困擾到，快適的度過每一天:wink:'
             )
           }
         ])
