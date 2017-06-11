@@ -31,16 +31,10 @@ class client {
    * @return {Promise}
    */
   userRequestNotification(userId, latitude, longitude) {
-    return this.post(
-      `/notify_here/${userId}`,
-      {
-        data: {
-          latitude,
-          longitude
-        }
-      },
-      'application/x-www-form-urlencoded'
-    )
+    return this.post(`/notify_here/${userId}`, {
+      longitude,
+      latitude
+    })
   }
 
   /**
