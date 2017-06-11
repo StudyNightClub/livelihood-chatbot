@@ -54,7 +54,7 @@ module.exports = () => {
       })
     )
 
-    ctx.state.serviceResponses = results
+    ctx.state.serviceResponses = [...ctx.state.serviceResponses, results]
     ctx.body = {}
   }
 }

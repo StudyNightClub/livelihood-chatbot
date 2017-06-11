@@ -11,9 +11,9 @@ module.exports = () => {
           ctx.store.onboard.getUserState(incomingEvent.userId) === 'engaged'
         ) {
           ctx.store.onboard.fire(incomingEvent.userId, 'doneSetting')
-          ctx.state.serviceResponses = await lineClient.pushMessage(
-            incomingEvent.userId,
-            [
+          ctx.state.serviceResponses = [
+            ...ctx.state.serviceResponses,
+            await lineClient.pushMessage(incomingEvent.userId, [
               {
                 type: 'text',
                 text: emoji.emojify('太好了，你已經設定完成囉:sparkles:')
@@ -26,8 +26,8 @@ module.exports = () => {
                 type: 'text',
                 text: emoji.emojify('讓你不會再被突然的停水、停電、及道路搶修給困擾到，快適的度過每一天:wink:')
               }
-            ]
-          )
+            ])
+          ]
         }
         break
       default:

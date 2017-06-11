@@ -22,11 +22,15 @@ module.exports = () => {
     await Promise.all(
       events.follow.map(async e => {
         const settingClient = ctx.clients.Setting
-        // TODO: handle connection error with livelihood control server
-        await settingClient.createNewUser(
+        // TODO: handle connection error with setting server
+        const settingResponse = await settingClient.createNewUser(
           e.source.userId,
           e.source.profile.displayName
         )
+        ctx.state.serviceResponses = [
+          ...ctx.state.serviceResponses,
+          settingResponse
+        ]
 
         ctx.store.onboard.fire(e.source.userId, 'followedMe')
 
