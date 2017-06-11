@@ -12,7 +12,7 @@ module.exports = () => {
           message: [
             {
               type: 'text',
-              text: emoji.emojify('噢噢，請先試著分享位置看看，或是直接去個人化設定進行設定呦:yum:')
+              text: emoji.emojify('噢噢，請先試著按教學分享位置看看，或是直接去個人化設定進行設定呦:yum:')
             }
           ]
         }
@@ -23,7 +23,7 @@ module.exports = () => {
           message: [
             {
               type: 'text',
-              text: emoji.emojify('是自然語言:scream::scream::scream:')
+              text: '有使用上其他問題可以跟我說，我會盡快回覆你喔！'
             }
           ]
         }
