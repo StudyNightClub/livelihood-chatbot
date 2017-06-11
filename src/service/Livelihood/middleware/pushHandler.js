@@ -23,8 +23,24 @@ module.exports = () => {
           pushNotifications
         )
       }
-
       ctx.state.serviceResponses = [serviceResponse]
+
+      if (
+        ctx.store.onboard.fire(
+          rawNotification.userId,
+          'receivedNotification'
+        ) === 'engaged'
+      ) {
+        serviceResponse = await lineClient.pushMessage(rawNotification.userId, {
+          type: 'text',
+          text: '我是生活 Chat 寶:blush:\n幫助您搶先知道未來停水、停電、以及道路搶修時間！記得點擊下方<預報及設定>選單進行個人化設定喔:point_down:'
+        })
+      }
+
+      ctx.state.serviceResponses = [
+        ...ctx.state.serviceResponses,
+        serviceResponse
+      ]
       ctx.body = {}
     } catch (err) {
       ctx.response.status = 400
