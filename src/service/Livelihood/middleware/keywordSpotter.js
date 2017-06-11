@@ -6,14 +6,16 @@ module.exports = () => {
     const respondEvents = []
 
     let mapURL = ''
-    incomingEvents.map(async e => {
-      if (e.message.text === '看看民生預報') {
-        mapURL = await ctx.clients.Livelihood.requestMapButtonURL(
-          e.source.userId
-        )
-      }
-      return Promise.resolve(e)
-    })
+    await Promise.all(
+      incomingEvents.map(async e => {
+        if (e.message.text === '看看民生預報') {
+          mapURL = await ctx.clients.Livelihood.requestMapButtonURL(
+            e.source.userId
+          )
+        }
+        return Promise.resolve(e)
+      })
+    )
 
     const noKeywordEvents = incomingEvents.reduce((res, event) => {
       if (event.type !== 'message') return
