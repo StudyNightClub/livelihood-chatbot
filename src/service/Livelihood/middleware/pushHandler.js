@@ -173,7 +173,7 @@ function altTextTemplate(notificationsByTypes) {
   const totalCounts = waterOutageCount + powerOutageCount + roadWorkCount
   const totalNotifyText = typeCounts > 1 ? `，共 ${totalCounts} 則公告訊息` : ''
 
-  return `生活 Chat 寶：您明天有 ${waterOutageNotify}${powerOutageNotify}${roadWorkNotify}${totalNotifyText}。`
+  return `您明天有 ${waterOutageNotify}${powerOutageNotify}${roadWorkNotify}${totalNotifyText}。`
 }
 
 /**
