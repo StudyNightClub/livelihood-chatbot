@@ -31,30 +31,32 @@ module.exports = () => {
           ...ctx.state.serviceResponses,
           settingResponse
         ]
+        // For new coming user
+        if (settingResponse.includes('already exists') === false) {
+          ctx.store.onboard.fire(e.source.userId, 'followedMe')
+          respondEvents.push({
+            target: e.replyToken,
+            event: 'follow',
+            type: 'reply',
+            message: [
+              { type: 'text', text: `${e.source.profile.displayName} 您好` },
+              {
+                type: 'text',
+                text: emoji.emojify('一起來看看你的周遭，政府正準備偷偷幹嘛:anguished:')
+              },
+              {
+                type: 'carousel',
+                altText: '試著分享隨意一個位置，看看政府正準備偷偷幹嘛',
+                cards: utils.shareLocationCarouselMessage()
+              },
+              {
+                type: 'text',
+                text: '分享位置訊息教學圖'
+              }
+            ]
+          })
+        }
 
-        ctx.store.onboard.fire(e.source.userId, 'followedMe')
-
-        respondEvents.push({
-          target: e.replyToken,
-          event: 'follow',
-          type: 'reply',
-          message: [
-            { type: 'text', text: `${e.source.profile.displayName} 您好` },
-            {
-              type: 'text',
-              text: emoji.emojify('一起來看看你的周遭，政府正準備偷偷幹嘛:anguished:')
-            },
-            {
-              type: 'carousel',
-              altText: '試著分享隨意一個位置，看看政府正準備偷偷幹嘛',
-              cards: utils.shareLocationCarouselMessage()
-            },
-            {
-              type: 'text',
-              text: '分享位置訊息教學圖'
-            }
-          ]
-        })
         return Promise.resolve(e)
       })
     )
