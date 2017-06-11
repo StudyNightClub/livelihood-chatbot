@@ -11,12 +11,20 @@ module.exports = () => {
 
     const pushNotifications = notificationFactory(rawNotification)
     try {
-      ctx.state.serviceResponses = [
-        await lineClient.pushMessage(rawNotification.userId, [
+      let serviceResponse
+      if (pushNotifications.altText) {
+        serviceResponse = await lineClient.pushMessage(rawNotification.userId, [
           { type: 'text', text: pushNotifications.altText },
           pushNotifications
         ])
-      ]
+      } else {
+        serviceResponse = await lineClient.pushMessage(
+          rawNotification.userId,
+          pushNotifications
+        )
+      }
+
+      ctx.state.serviceResponses = [serviceResponse]
       ctx.body = {}
     } catch (err) {
       ctx.response.status = 400
@@ -33,8 +41,9 @@ function isRawNotificationValid(rawNotification) {
     throw new MessageFormatError('body must contain category attribute!')
   }
   if (
-    !rawNotification.notifications ||
-    rawNotification.notifications.length <= 0
+    (!rawNotification.notifications ||
+      rawNotification.notifications.length <= 0) &&
+    rawNotification.category !== 'userRequested'
   ) {
     throw new MessageFormatError('notification must existed and contain data')
   }
@@ -48,12 +57,28 @@ function isRawNotificationValid(rawNotification) {
 function notificationFactory(rawNotification) {
   switch (rawNotification.category) {
     case 'userRequested':
+      if (!rawNotification.notifications) {
+        return noNotificationsMessage()
+      } else {
+        return userRequestedFormMessage(rawNotification)
+      }
     case 'userScheduled':
     case 'systemScheduled':
     case 'broadcast':
       return userRequestedFormMessage(rawNotification)
     default:
       throw new TypeError('Unknown type of notification!')
+  }
+}
+
+/**
+ * Generate the no notification message object
+ * @return {Object}
+ */
+function noNotificationsMessage() {
+  return {
+    type: 'text',
+    text: '關於您所選擇的地點，目前附近沒有任何民生公告喔！'
   }
 }
 
