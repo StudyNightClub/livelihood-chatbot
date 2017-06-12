@@ -32,7 +32,7 @@ module.exports = () => {
             )
           })
           return res
-        case '看看民生預報':
+        case '看看地圖預報':
           respondEvents.push({
             target: event.replyToken,
             event: 'keyword',
