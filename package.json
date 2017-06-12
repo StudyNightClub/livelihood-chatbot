@@ -1,6 +1,6 @@
 {
   "name": "livelihood-chatbot",
-  "version": "0.0.1",
+  "version": "0.1",
   "description": "Chat interface for pushing government livelihood notification",
   "main": "src/app.js",
   "author": "Eason Chiang",
