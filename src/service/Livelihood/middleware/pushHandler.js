@@ -1,6 +1,7 @@
 const lineCarouselTemplate = require('../../LINE/utils')
   .carouselMessageFormatter
 const MessageFormatError = require('../../../exceptions').MessageFormatError
+const emoji = require('node-emoji')
 
 module.exports = () => {
   return async (ctx, next) => {
@@ -23,8 +24,58 @@ module.exports = () => {
           pushNotifications
         )
       }
-
       ctx.state.serviceResponses = [serviceResponse]
+
+      if (
+        ctx.store.onboard.getUserState(
+          rawNotification.userId,
+          'receivedNotification'
+        ) === 'engaging'
+      ) {
+        ctx.store.onboard.fire(rawNotification.userId, 'receivedNotification')
+        if (pushNotifications.altText) {
+          serviceResponse = await lineClient.pushMessage(
+            rawNotification.userId,
+            [
+              {
+                type: 'text',
+                text: emoji.emojify(
+                  '嗯！我是生活 Chat 寶:blush:\n幫助您搶先知道未來停水、停電、以及道路搶修的時間！'
+                )
+              },
+              {
+                type: 'text',
+                text: emoji.emojify(
+                  '現在就點選左下方按鈕 -> 開啟預報及設定-> 進入個人化設定。\n完成後就可以收到特別為你設計的民生停水、停電預報通知喔。（還有你家馬路外面施工的預報通知喔！）:point_down:'
+                )
+              }
+            ]
+          )
+        } else {
+          serviceResponse = await lineClient.pushMessage(
+            rawNotification.userId,
+            [
+              {
+                type: 'text',
+                text: emoji.emojify(
+                  '不過沒關係，我是生活 Chat 寶:blush:\n幫助您搶先知道未來停水、停電、以及道路搶修的時間！'
+                )
+              },
+              {
+                type: 'text',
+                text: emoji.emojify(
+                  '現在就點選左下方按鈕 -> 開啟預報及設定-> 進入個人化設定。\n完成後就可以收到特別為你設計的民生停水、停電預報通知喔。（還有你家馬路外面施工的預報通知喔！）:point_down:'
+                )
+              }
+            ]
+          )
+        }
+      }
+
+      ctx.state.serviceResponses = [
+        ...ctx.state.serviceResponses,
+        serviceResponse
+      ]
       ctx.body = {}
     } catch (err) {
       ctx.response.status = 400
@@ -57,15 +108,18 @@ function isRawNotificationValid(rawNotification) {
 function notificationFactory(rawNotification) {
   switch (rawNotification.category) {
     case 'userRequested':
-      if (!rawNotification.notifications) {
+      if (
+        !rawNotification.notifications ||
+        rawNotification.notifications.length === 0
+      ) {
         return noNotificationsMessage()
       } else {
-        return userRequestedFormMessage(rawNotification)
+        return userRequestedFormMessageOneTypeOneNotify(rawNotification)
       }
     case 'userScheduled':
     case 'systemScheduled':
     case 'broadcast':
-      return userRequestedFormMessage(rawNotification)
+      return userRequestedFormMessageOneTypeOneNotify(rawNotification)
     default:
       throw new TypeError('Unknown type of notification!')
   }
@@ -78,16 +132,16 @@ function notificationFactory(rawNotification) {
 function noNotificationsMessage() {
   return {
     type: 'text',
-    text: '關於您所選擇的地點，目前附近沒有任何民生公告喔！'
+    text: '您所選擇的地點，目前附近沒有政府預定的民生公告訊息喔！'
   }
 }
 
 /**
- * Generate the userRequested category of push notification
+ * Generate the userRequested category of push notification one by one category
  * @param {Object} raw - Incoming raw data for pushing
  * @return {Object}
  */
-function userRequestedFormMessage(raw) {
+function userRequestedFormMessageOneTypeOneNotify(raw) {
   const notificationsByTypes = {}
   raw.notifications.forEach(notification => {
     if (!notificationsByTypes[notification.type])
@@ -95,9 +149,11 @@ function userRequestedFormMessage(raw) {
     notificationsByTypes[notification.type].push(notification)
   })
   const altText = altTextTemplate(notificationsByTypes)
+
   const cards = Object.keys(notificationsByTypes).map(type => {
     const notificationType = notificationTypeFactory(type)
-    const notificationDetail = notificationDetailFactory(
+
+    const notificationDetail = notificationNearestDateFactory(
       type,
       notificationsByTypes[type]
     )
@@ -121,21 +177,93 @@ function userRequestedFormMessage(raw) {
 
 /**
  * Generate the description of card of carousel message depending on type of the notification
- * @param {String} type - type of the notification
- * @param {Object} notifications - notifications in same types
- * @return {String}
+ * @param {String} type - the type of the notification
+ * @param {Array} notifications - notifications in same type
+ * @return {Object}
  */
-function notificationDetailFactory(type, notifications) {
+function notificationNearestDateFactory(type, notifications) {
+  const nearestNotification = findNearestEndNotification(notifications)
   switch (type) {
     case 'water_outage':
     case 'power_outage':
-      return waterPowerOutageContent(notifications)
+      return waterPowerOutageContent([nearestNotification])
     case 'road_work':
-      return roadWorkContent(notifications)
+      return roadWorkContent([nearestNotification])
     default:
       throw new TypeError('Unknown type of notification!')
   }
 }
+
+/**
+ * Find the nearest date time notification compared with now 
+ * @param {Array} notifications - notifications in same type
+ * @return {Object}
+ */
+function findNearestEndNotification(notifications) {
+  const notifyEndMilliseconds = notifications.map(notification => {
+    if (notification.endTime)
+      return Date.parse(`${notification.endDate} ${notification.endTime}`)
+    else return Date.parse(`${notification.endDate}`)
+  })
+  return notifications[
+    notifyEndMilliseconds.indexOf(Math.min(...notifyEndMilliseconds))
+  ]
+}
+
+/**
+ * Generate the userRequested category of push notification
+ * @param {Object} raw - Incoming raw data for pushing
+ * @return {Object}
+ */
+// function userRequestedFormMessage(raw) {
+//   const notificationsByTypes = {}
+//   raw.notifications.forEach(notification => {
+//     if (!notificationsByTypes[notification.type])
+//       notificationsByTypes[notification.type] = []
+//     notificationsByTypes[notification.type].push(notification)
+//   })
+//   const altText = altTextTemplate(notificationsByTypes)
+//   const cards = Object.keys(notificationsByTypes).map(type => {
+//     const notificationType = notificationTypeFactory(type)
+//     const notificationDetail = notificationDetailFactory(
+//       type,
+//       notificationsByTypes[type]
+//     )
+//     return {
+//       thumbnailImageUrl: thumbnailFactory(type),
+//       title: `明天要${notificationType}`,
+//       text: notificationDetail.length >= 60
+//         ? notificationDetail.slice(0, 60)
+//         : notificationDetail,
+//       actions: [
+//         {
+//           type: 'uri',
+//           label: `看看${notificationType}範圍`,
+//           uri: raw.mapURL[type]
+//         }
+//       ]
+//     }
+//   })
+//   return lineCarouselTemplate(altText, cards)
+// }
+
+/**
+ * Generate the description of card of carousel message depending on type of the notification
+ * @param {String} type - type of the notification
+ * @param {Object} notifications - notifications in same types
+ * @return {String}
+ */
+// function notificationDetailFactory(type, notifications) {
+//   switch (type) {
+//     case 'water_outage':
+//     case 'power_outage':
+//       return waterPowerOutageContent(notifications)
+//     case 'road_work':
+//       return roadWorkContent(notifications)
+//     default:
+//       throw new TypeError('Unknown type of notification!')
+//   }
+// }
 
 /**
  * Generate the description of card of carousel message on waterOutage and powerOutage type
@@ -145,8 +273,23 @@ function notificationDetailFactory(type, notifications) {
 function waterPowerOutageContent(notifications) {
   return notifications.reduce((output, notify) => {
     if (output) output += '\n'
-    return (output += `${notify.startDate.slice(5)}~${notify.endDate.slice(5)} ${notify.startTime}~${notify.endTime}\n${notify.addrRoad}`)
+    const startChineseYear = convertToChineseYear(
+      parseInt(notify.startDate.slice(0, 4), 10)
+    )
+    const endChineseYear = convertToChineseYear(
+      parseInt(notify.endDate.slice(0, 4), 10)
+    )
+    return (output += `${startChineseYear}/${notify.startDate.slice(5)} ～ ${endChineseYear}/${notify.endDate.slice(5)}\n${notify.startTime} ～ ${notify.endTime}\n${notify.addrRoad}`)
   }, '')
+}
+
+/**
+ * Convert the year format to chinese year format
+ * @param {Number} year - the number of the year
+ * @return {Number}
+ */
+function convertToChineseYear(year) {
+  return year - 1911
 }
 
 /**
@@ -158,9 +301,15 @@ function roadWorkContent(notifications) {
   return notifications.reduce((output, notify) => {
     if (output) output += '\n'
     const timeContent = notify.startTime && notify.endTime
-      ? `${notify.startTime}~${notify.endTime}`
+      ? `${notify.startTime} ~ ${notify.endTime}`
       : '依交通管制時間施工'
-    return (output += `${notify.startDate.slice(5)}~${notify.endDate.slice(5)} ${timeContent}\n${notify.addrRoad}`)
+    const startChineseYear = convertToChineseYear(
+      parseInt(notify.startDate.slice(0, 4), 10)
+    )
+    const endChineseYear = convertToChineseYear(
+      parseInt(notify.endDate.slice(0, 4), 10)
+    )
+    return (output += `${startChineseYear}/${notify.startDate.slice(5)} ～ ${endChineseYear}/${notify.endDate.slice(5)}\n${timeContent}\n${notify.addrRoad}`)
   }, '')
 }
 
@@ -196,9 +345,9 @@ function altTextTemplate(notificationsByTypes) {
     : ''
 
   const totalCounts = waterOutageCount + powerOutageCount + roadWorkCount
-  const totalNotifyText = typeCounts > 1 ? `，共 ${totalCounts} 則公告訊息` : ''
+  const totalNotifyText = typeCounts > 1 ? `，共 ${totalCounts} 則通知` : ''
 
-  return `您明天有 ${waterOutageNotify}${powerOutageNotify}${roadWorkNotify}${totalNotifyText}。`
+  return `您明天有 ${waterOutageNotify}${powerOutageNotify}${roadWorkNotify}${totalNotifyText}。快來查看內容，好提早準備喔！`
 }
 
 /**
@@ -231,7 +380,7 @@ function notificationTypeFactory(type) {
     case 'power_outage':
       return '停電'
     case 'road_work':
-      return '修路'
+      return '道路施工'
     default:
       throw new TypeError('Unknown type of notification!')
   }

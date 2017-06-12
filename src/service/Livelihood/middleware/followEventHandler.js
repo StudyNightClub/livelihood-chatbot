@@ -42,16 +42,12 @@ module.exports = () => {
               { type: 'text', text: `${e.source.profile.displayName} 您好` },
               {
                 type: 'text',
-                text: emoji.emojify('一起來看看你的周遭，政府正準備偷偷幹嘛:anguished:')
+                text: emoji.emojify('一起來看看你的周圍，政府正準備進行什麼你不知道的事呢？:anguished:')
               },
               {
                 type: 'carousel',
                 altText: '試著分享隨意一個位置，看看政府正準備偷偷幹嘛',
                 cards: utils.shareLocationCarouselMessage()
-              },
-              {
-                type: 'text',
-                text: '分享位置訊息教學圖'
               }
             ]
           })

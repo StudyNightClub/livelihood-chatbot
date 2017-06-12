@@ -5,6 +5,18 @@ module.exports = () => {
     const incomingEvents = ctx.state.incomingEvents
     const respondEvents = []
 
+    let mapURL = ''
+    await Promise.all(
+      incomingEvents.map(async e => {
+        if (e.message.text === '看看民生預報') {
+          mapURL = await ctx.clients.Livelihood.requestMapButtonURL(
+            e.source.userId
+          )
+        }
+        return Promise.resolve(e)
+      })
+    )
+
     const noKeywordEvents = incomingEvents.reduce((res, event) => {
       if (event.type !== 'message') return
 
@@ -25,13 +37,7 @@ module.exports = () => {
             target: event.replyToken,
             event: 'keyword',
             type: 'reply',
-            message: utils.mapButtonMessage(
-              (async () => {
-                return await ctx.clients.requestMapButtonURL(
-                  event.source.userId
-                )
-              })()
-            )
+            message: utils.mapButtonMessage(mapURL)
           })
           return res
         default:

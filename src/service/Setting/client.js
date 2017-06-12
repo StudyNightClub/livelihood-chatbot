@@ -111,7 +111,7 @@ class client {
    * @return {String}
    */
   getSettingPageURL(userId) {
-    return `${this.settingServerRoot}/user/${userId}?userToken=${this.userToken}`
+    return `${this.settingServerRoot}/setting/${userId}?userToken=${this.userToken}`
   }
 }
 module.exports = client

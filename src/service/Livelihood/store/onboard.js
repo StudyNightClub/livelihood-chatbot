@@ -52,8 +52,8 @@ class OnboardStateManagement {
         return none(event)
       case 'incoming':
         return incoming(event)
-      // case 'engaging':
-      //   return engaging(event)
+      case 'engaging':
+        return engaging(event)
       case 'engaged':
         return engaged(event)
       default:
@@ -81,24 +81,28 @@ class OnboardStateManagement {
     function incoming(action) {
       switch (action) {
         case 'sharedLocation':
-          return 'engaged'
+          return 'engaging'
+        case 'doneSetting':
+          return null
         default:
           return 'incoming'
       }
     }
-    // /**
-    //  * Definition of transition from engaging state
-    //  * @param {String} action - the event name
-    //  * @return {String|Undefined} - next state of the transition
-    //  */
-    // function engaging(action) {
-    //   switch (action) {
-    //     case 'receivedNotification':
-    //       return 'engaged'
-    //     default:
-    //       return 'engaging'
-    //   }
-    // }
+    /**
+     * Definition of transition from engaging state
+     * @param {String} action - the event name
+     * @return {String|Undefined} - next state of the transition
+     */
+    function engaging(action) {
+      switch (action) {
+        case 'receivedNotification':
+          return 'engaged'
+        case 'doneSetting':
+          return null
+        default:
+          return 'engaging'
+      }
+    }
     /**
      * Definition of transition from engaged state
      * @param {String} action - the event name

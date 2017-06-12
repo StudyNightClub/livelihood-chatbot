@@ -4,34 +4,31 @@ module.exports = () => {
   return async (ctx, next) => {
     const lineClient = ctx.clients.LINE
     const incomingEvent = ctx.state.incomingEvent
+    const userId = incomingEvent.userId || incomingEvent.id
 
-    switch (incomingEvent.type) {
-      case 'initialize':
-        if (
-          ctx.store.onboard.getUserState(incomingEvent.userId) === 'engaged'
-        ) {
-          ctx.store.onboard.fire(incomingEvent.userId, 'doneSetting')
-          ctx.state.serviceResponses = [
-            ...ctx.state.serviceResponses,
-            await lineClient.pushMessage(incomingEvent.userId, [
-              {
-                type: 'text',
-                text: emoji.emojify('太好了，你已經設定完成囉:sparkles:')
-              },
-              {
-                type: 'text',
-                text: '本服務將會根據你的個人化設定，適時推播各種政府民生公告喔！'
-              },
-              {
-                type: 'text',
-                text: emoji.emojify('讓你不會再被突然的停水、停電、及道路搶修給困擾到，快適的度過每一天:wink:')
-              }
-            ])
-          ]
-        }
-        break
-      default:
+    // switch (incomingEvent.type) {
+    //   case 'initialize':
+    if (ctx.store.onboard.getUserState(userId)) {
+      ctx.store.onboard.fire(userId, 'doneSetting')
+      ctx.state.serviceResponses = [
+        ...(ctx.state.serviceResponses || []),
+        await lineClient.pushMessage(userId, [
+          {
+            type: 'text',
+            text: emoji.emojify('太好了，你已經設定完成囉:sparkles:')
+          },
+          {
+            type: 'text',
+            text: emoji.emojify(
+              '生活 Chat 寶會專注於你的個人設定，在適當的時機，提早通知你政府重要的民生公告訊息。\n讓你不再被麻煩的停水、停電、無預警的道路施工給困擾著，輕鬆地度過每一天:wink:'
+            )
+          }
+        ])
+      ]
     }
+    //     break
+    //   default:
+    // }
 
     ctx.body = {}
   }
