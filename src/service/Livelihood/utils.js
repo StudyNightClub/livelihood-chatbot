@@ -178,12 +178,12 @@ module.exports.userRequestedNotification = userRequestedNotification
 function settingButtonMessage(settingURL) {
   return {
     type: 'button',
-    altText: '前往個人化設定頁面',
+    altText: '前往個人設定頁面',
     description: '點擊下方按鈕，前往設定頁面',
     actions: [
       {
         type: 'uri',
-        label: '點此前往設定頁面',
+        label: '點此前往個人設定頁面',
         uri: settingURL
       }
     ],
@@ -200,12 +200,12 @@ module.exports.settingButtonMessage = settingButtonMessage
 function mapButtonMessage(mapURL) {
   return {
     type: 'button',
-    altText: '前往預報地圖頁面',
+    altText: '前往地圖預報頁面',
     description: '點擊下方按鈕，前往預報頁面',
     actions: [
       {
         type: 'uri',
-        label: '點此前往預報頁面',
+        label: '點此前往地圖預報頁面',
         uri: mapURL
       }
     ],
