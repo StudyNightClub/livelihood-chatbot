@@ -8,7 +8,7 @@ module.exports = () => {
     let mapURL = ''
     await Promise.all(
       incomingEvents.map(async e => {
-        if (e.message.text === '看看民生預報') {
+        if (e.message.text === '看看地圖預報') {
           mapURL = await ctx.clients.Livelihood.requestMapButtonURL(
             e.source.userId
           )
